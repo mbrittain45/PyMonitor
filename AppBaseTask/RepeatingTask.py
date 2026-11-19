@@ -1,7 +1,7 @@
 
 
 
-from AppBaseTask import Task, ETaskResult, TaskParent
+from AppBaseTask import Task, TaskParent
 
 
 #
@@ -16,8 +16,9 @@ class RepeatingTask( Task ):
 
 
     # this function must be overridden
-    def processTask(self) -> ETaskResult:
+    def processTask(self) -> bool:
         
+        assert( False )
         self.error = "RepeatingTask processTask() must be overwritten by derived class"
-        return ETaskResult.eFailed
+        return False
 
