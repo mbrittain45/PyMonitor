@@ -1,0 +1,16 @@
+
+
+#
+# Just list the Companies that are important to you one per line. You can list the Company
+# Names or Companies Stock Symbol, which ever is easier.
+#
+
+AT&T
+Boeing
+CocaCola,KO
+Eaton
+Pepsi
+HP
+Lenovo
+CAT
+

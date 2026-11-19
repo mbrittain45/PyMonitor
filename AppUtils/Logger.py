@@ -2,11 +2,12 @@
 
 from enum import Enum
 
-from AppUtils import GuardedList, DateTimeFmt
+from AppUtils import GuardedList, DTFmt
 
 from AppBaseTask import Task, TaskParent
 
-from FileSystem import FileOperation, FileOpParent, AsyncFileTaskMgr
+from FileSystem import FileOperation, FileOpParent
+
 
 #
 # Logger Msg Type
@@ -18,6 +19,7 @@ class ELogMsgType(Enum):
     eWARN  = 3
     eERROR = 4
     eFATAL = 5
+
 
 
 #
@@ -41,18 +43,15 @@ class Logger( Task, TaskParent, FileOpParent ):
 
 
     # process our task by logging to a file
-    def processTask(self) -> bool:  # type: ignore
+    def processTask(self) -> bool:
 
         if self.logmsgs.getCount() :
-            
-            logFile = f"./LogFiles/LogFile_{DateTimeFmt.getDate()}.txt"
-            
-            fileOp  = FileOperation.createWriteFileOp( logFile, self.logmsgs.getList(), self, False )
-            
-            if not AsyncFileTaskMgr.requestFileOp( fileOp ):
-                assert( False )
 
+            data: list[str] = self.logmsgs.copyList()
 
+            logFile = f"./LogFiles/LogFile_{DTFmt.getDate()}.txt"
+            FileOperation.createWriteLinesFileOp( logFile, data, self, False )
+            
         return True
     
 
@@ -68,7 +67,7 @@ class Logger( Task, TaskParent, FileOpParent ):
         if Logger.enableTypes[ msgType.value ]:
 
             newMsg = "@ "
-            newMsg += DateTimeFmt.getDateTime()
+            newMsg += DTFmt.getDateTime()
             newMsg += " MsgType: "
             newMsg += Logger.msgTypes[ msgType.value ]
             newMsg += " - Msg: "

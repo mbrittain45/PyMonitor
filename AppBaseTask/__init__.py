@@ -1,4 +1,6 @@
 
+from .TaskManager import *
+
 from .SingleShotTask import *
 
 from .RepeatingTask import *

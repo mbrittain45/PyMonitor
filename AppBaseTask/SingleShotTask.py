@@ -1,6 +1,6 @@
 
 
-from AppBaseTask import Task, ETaskResult, TaskParent
+from AppBaseTask import Task, TaskParent
 
 
 #
@@ -15,9 +15,10 @@ class SingleShotTask( Task ):
 
 
     # the derived class must override this function
-    def processTask(self) -> ETaskResult:
+    def processTask(self) -> bool:
         
+        assert( False )
         self.error = "SingleShotTask processTask() must be overwritten by derived class"
-        return ETaskResult.eFailed
+        return True
         
 

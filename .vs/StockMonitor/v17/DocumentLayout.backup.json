@@ -1,0 +1,109 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\A-Projects\\A-StockMonitor\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|C:\\A-Projects\\A-StockMonitor\\AppTasks\\BaseScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|solutionrelative:AppTasks\\BaseScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|C:\\A-Projects\\A-StockMonitor\\AppBaseTask\\Task.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|solutionrelative:AppBaseTask\\Task.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|C:\\A-Projects\\A-StockMonitor\\AppTasks\\NewsScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|solutionrelative:AppTasks\\NewsScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|C:\\A-Projects\\A-StockMonitor\\AppTasks\\RssScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|solutionrelative:AppTasks\\RssScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|C:\\A-Projects\\A-StockMonitor\\AppTasks\\AtomScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{2D06424C-AA8C-4A35-A1C6-80E85CDEAA97}|StockMonitor.pyproj|solutionrelative:AppTasks\\AtomScraperTask.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Task.py",
+              "DocumentMoniker": "C:\\A-Projects\\A-StockMonitor\\AppBaseTask\\Task.py",
+              "RelativeDocumentMoniker": "AppBaseTask\\Task.py",
+              "ToolTip": "C:\\A-Projects\\A-StockMonitor\\AppBaseTask\\Task.py",
+              "RelativeToolTip": "AppBaseTask\\Task.py",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAvwHwAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-10-29T15:44:48.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BaseScraperTask.py",
+              "DocumentMoniker": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\BaseScraperTask.py",
+              "RelativeDocumentMoniker": "AppTasks\\BaseScraperTask.py",
+              "ToolTip": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\BaseScraperTask.py",
+              "RelativeToolTip": "AppTasks\\BaseScraperTask.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-10-29T15:40:02.327Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AtomScraperTask.py",
+              "DocumentMoniker": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\AtomScraperTask.py",
+              "RelativeDocumentMoniker": "AppTasks\\AtomScraperTask.py",
+              "ToolTip": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\AtomScraperTask.py",
+              "RelativeToolTip": "AppTasks\\AtomScraperTask.py",
+              "ViewState": "AgIAABMAAAAAAAAAAAAswEUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-10-29T15:36:28.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RssScraperTask.py",
+              "DocumentMoniker": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\RssScraperTask.py",
+              "RelativeDocumentMoniker": "AppTasks\\RssScraperTask.py",
+              "ToolTip": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\RssScraperTask.py",
+              "RelativeToolTip": "AppTasks\\RssScraperTask.py",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAswEsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-10-29T15:36:15.971Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NewsScraperTask.py",
+              "DocumentMoniker": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\NewsScraperTask.py",
+              "RelativeDocumentMoniker": "AppTasks\\NewsScraperTask.py",
+              "ToolTip": "C:\\A-Projects\\A-StockMonitor\\AppTasks\\NewsScraperTask.py",
+              "RelativeToolTip": "AppTasks\\NewsScraperTask.py",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACsAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-10-29T15:27:56.489Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

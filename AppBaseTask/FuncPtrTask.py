@@ -1,10 +1,10 @@
 
 
-from AppBaseTask import SingleShotTask, ETaskResult, TaskParent
+from AppBaseTask import SingleShotTask, TaskParent
 
 from AppUtils import Logger
 
-from typing import Callable, Any
+from typing import Callable
 
 #
 # Function Pointer Task - a single shot task that calls a function somewhere
@@ -13,28 +13,28 @@ class FuncPtrTask( SingleShotTask ):
 
 
     # init ourself
-    def __init__( self, taskName: str, parent: TaskParent, func: Callable[ [list[Any]], None ], funcArgs: list[Any] = None ): # type: ignore
+    def __init__( self, taskName: str, parent: TaskParent, func: Callable[ [], None ], funcArgs: [] ): # type: ignore
 
         SingleShotTask.__init__( self, taskName, parent )
 
-        self.function    = func
-        self.funcArgs    = funcArgs
+        self.function    = func         # type: ignore
+        self.funcArgs    = funcArgs     # type: ignore
         
         self.__startTask__()
 
 
     # call the function to process our task
-    def processTask(self) -> ETaskResult:
+    def processTask(self) -> bool:
         
         try:
 
-            self.function( self.funcArgs )
+            self.function( self.funcArgs )      # type: ignore
         
         except:
 
             Logger.err( f"FuncPtrTask.processTask for - {self.taskName} - threw an exception inside the function" )
-            return ETaskResult.eExcepted
+            return False
 
-        return ETaskResult.eSucceeded
+        return True
 
 

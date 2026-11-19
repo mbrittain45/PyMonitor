@@ -1,7 +1,7 @@
 
 
 
-from AppBaseTask import RepeatingTask, ETaskResult, TaskParent
+from AppBaseTask import RepeatingTask, TaskParent
 
 from AppUtils import Logger
 
@@ -14,7 +14,7 @@ class RepeatFuncPtrTask( RepeatingTask ):
 
 
     # init ourself
-    def __init__( self, taskName: str, parent: TaskParent, sleepTime: int, func: Callable[ [list[Any]], None ], funcArgs: list[Any] = None ): # type: ignore
+    def __init__( self, taskName: str, parent: TaskParent, sleepTime: int, func: Callable[ [list[Any] ], None ], funcArgs: list[Any] = None ): # type: ignore
 
         RepeatingTask.__init__( self, taskName, parent )
 
@@ -27,7 +27,7 @@ class RepeatFuncPtrTask( RepeatingTask ):
 
 
     # call the function to process our task
-    def processTask(self) -> ETaskResult:
+    def processTask(self) -> bool:
         
         try:
 
@@ -36,8 +36,7 @@ class RepeatFuncPtrTask( RepeatingTask ):
         except:
 
             Logger.err( f"FuncPtrTask.processTask for - {self.taskName} - threw an exception inside the function" )
-            return ETaskResult.eExcepted
+            return False
 
-        return ETaskResult.eSucceeded
-
+        return True
 

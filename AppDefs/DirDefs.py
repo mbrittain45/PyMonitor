@@ -1,7 +1,7 @@
 
 
 
-from FileSystem import FileSystemOps
+from FileSystem import FileSystem
 
 #
 # Directory Definitions
@@ -9,76 +9,62 @@ from FileSystem import FileSystemOps
 class DirDefs:
     
     # directory separator
-    DIR_SEP                 = '/'
+    SEP                     = '/'
 
     # paths underneath us
-    APP_DATA_PATH           = ("." + DIR_SEP + 'Data' + DIR_SEP)
-    APP_INPUT_PATH          = (APP_DATA_PATH + 'Input' + DIR_SEP)
-    APP_OUTPUT_PATH         = (APP_DATA_PATH + 'Output' + DIR_SEP)
-    APP_CACHE_PATH          = (APP_DATA_PATH + 'Cache' + DIR_SEP)
+    APP_DATA_PATH           = ('.' + SEP + 'Data' + SEP)
+    APP_INPUT_PATH          = (APP_DATA_PATH + 'Input' + SEP)
+    APP_OUTPUT_PATH         = (APP_DATA_PATH + 'Output' + SEP)
+    APP_CACHE_PATH          = (APP_DATA_PATH + 'Cache' + SEP)
     
-    # file delimiters
-    COM_DEL                 = ","
-    END_DEL                 = "\n"
-    BAS_DEL                 = ";"
-    DER_DEL                 = "-"
-    TOP_DEL                 = "="
-    CMT_DEL                 = "#"
-    
-    # others
-    DATA_EXT                = ".dat"
-    SENTENCE_ENDINGS        = [ ".", "?", "!" ]
-   
     @staticmethod
-    def getInputDir():
+    def getInputDir() -> str:
         return DirDefs.APP_INPUT_PATH
 
     @staticmethod
-    def getOutputDir():
+    def getOutputDir() -> str:
         return DirDefs.APP_OUTPUT_PATH
 
     @staticmethod
-    def getCacheDir():
+    def getCacheDir() -> str:
         return DirDefs.APP_CACHE_PATH
 
     @staticmethod
-    def createDirs():
+    def createDirs() -> None:
 
         Directories = [ DirDefs.APP_DATA_PATH, DirDefs.APP_INPUT_PATH, DirDefs.APP_OUTPUT_PATH, DirDefs.APP_CACHE_PATH ]
-
         for directory in Directories:
-
-            FileSystemOps.createDirs( directory )
+            FileSystem.createDirs( directory )
 
 
     @staticmethod
-    def addToDataDir( endDirName: str = '' ):
+    def addToDataDir( endDirName: str ) -> str:
  
-       return (DirDefs.APP_DATA_PATH + endDirName)
+       return (DirDefs.APP_DATA_PATH + endDirName + DirDefs.SEP)
     
 
     @staticmethod
-    def addToInputDir( endDirName: str = '' ):
+    def addToInputDir( endDirName: str ) -> str:
         
-        return (DirDefs.APP_INPUT_PATH + endDirName)
+        return (DirDefs.APP_INPUT_PATH + endDirName + DirDefs.SEP)
     
 
     @staticmethod
-    def addToOutputDir( endDirName: str = '' ):
+    def addToOutputDir( endDirName: str ) -> str:
         
-        return (DirDefs.APP_OUTPUT_PATH + endDirName)
+        return (DirDefs.APP_OUTPUT_PATH + endDirName + DirDefs.SEP)
     
     
     @staticmethod
-    def addToCacheDir( endDirName: str = '' ):
+    def addToCacheDir( endDirName: str ) -> str:
         
-        return (DirDefs.APP_CACHE_PATH + endDirName)
+        return (DirDefs.APP_CACHE_PATH + endDirName + DirDefs.SEP)
     
 
     @staticmethod
-    def makePath( directory: str, endDirName: str = "" ):
+    def makePath( directory: str, endDirName: str ) -> str:
      
-        return (directory + DirDefs.DIR_SEP + endDirName)
+        return (directory + DirDefs.SEP + endDirName + DirDefs.SEP)
 
 
 

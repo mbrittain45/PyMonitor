@@ -1,8 +1,6 @@
 
 from datetime import datetime
-
 from enum import Enum
-
 from abc import ABC, abstractmethod
 
 from AppBaseTask import Task
@@ -37,8 +35,7 @@ class StateOfTask:
         self.state          = ETaskState.eUnknown
         self.prevState      = ETaskState.eUnknown
         self.nextState      = ETaskState.eUnknown
-        self.registered     = False
-    
+            
     
     # set the new state..everyone should go through here
     def setState(self, state: ETaskState ):
@@ -46,7 +43,7 @@ class StateOfTask:
         self.prevState    = self.state
         self.state        = state
         self.nextState    = int( state.value + 1 )
-# todo:        self.stateTransTime[ int(state.value) ] = DateTimeUtils.getCurTime()
+# todo:        self.stateTransTime[ int(state.value) ] = DTUtils.getCurTime()
         
     # get a task state as a string
     @staticmethod

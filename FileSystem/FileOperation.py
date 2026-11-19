@@ -4,10 +4,8 @@ from abc import ABC, abstractmethod
 
 from enum import Enum
 
-from FileSystem import FileData, FileSystemOps
+from FileSystem import FileData, FileSystem, EFileDataType, AsyncFileTaskMgr
 
-
-#from typing import List, Deque, Dict, DefaultDict, OrderedDict, Union, Optional, 
 
 #
 # File Operation Result
@@ -100,17 +98,9 @@ class FileOperation:
         
 
     def getOpAsStr( self ):
-
         return self.ETypeAsString[ self.type.value ]
 
-        
-
-        
-
-        
-
-        
-
+       
     def isValid( self ) -> bool:
     
         if len( self.filepath ) <= 0:
@@ -119,16 +109,13 @@ class FileOperation:
 
         if self.type == EFileOpType.eRead or self.type == EFileOpType.eAppend:
         
-            if not FileSystemOps.doesFileExist( self.filepath ):
-            
+            if not FileSystem.doesFileExist( self.filepath ):
                 if self.type == EFileOpType.eAppend:
                     self.type = EFileOpType.eWrite
             
             else:
-            
                 self.result.error = f"The File Path: {self.filepath} must exist for Reading and Appending file operations"
                 return False
-
 
         type = int(self.type.value)
         if type > int(2):
@@ -140,23 +127,68 @@ class FileOperation:
         return True
 
 
-
-
     @staticmethod
-    def createWriteFileOp( filePath: str, data: list[str], parent: FileOpParent, binary: bool ) -> FileOperation:
+    def createWriteLinesFileOp( filePath: str, data: list[str], parent: FileOpParent, binary: bool ) -> FileOperation:
 
         fileOp      = FileOperation( filePath, parent, binary )
-        fileOp.data = data
+        fileOp.data.setStrings( data )
         fileOp.type = EFileOpType.eWrite
+
+        if FileSystem.doesFileExist( filePath ):
+            fileOp.type = EFileOpType.eAppend
+
+        AsyncFileTaskMgr.requestFileOp( fileOp );
         return fileOp
 
 
+    @staticmethod
+    def createWriteBlobFileOp( filePath: str, data: str, parent: FileOpParent, binary: bool ) -> FileOperation:
+
+        fileOp      = FileOperation( filePath, parent, binary )
+        fileOp.data.setString( data )
+        fileOp.type = EFileOpType.eWrite
+
+        if FileSystem.doesFileExist( filePath ):
+            fileOp.type = EFileOpType.eAppend
+
+        AsyncFileTaskMgr.requestFileOp( fileOp );
+        return fileOp
+
 
     @staticmethod
-    def createReadFileOp( path: str, parent: FileOpParent, binary: bool ) -> FileOperation:
+    def createReadBlobFileOp( path: str, parent: FileOpParent, binary: bool ) -> FileOperation:
 
         fileOp      = FileOperation( path, parent, binary )
         fileOp.type = EFileOpType.eRead
+        fileOp.data.type = EFileDataType.eString
+        
+        AsyncFileTaskMgr.requestFileOp( fileOp );
         return fileOp
 
 
+    @staticmethod
+    def createReadLinesFileOp( path: str, parent: FileOpParent, binary: bool ) -> FileOperation:
+
+        fileOp      = FileOperation( path, parent, binary )
+        fileOp.type = EFileOpType.eRead
+        fileOp.data.type = EFileDataType.eStrings
+
+        AsyncFileTaskMgr.requestFileOp( fileOp );
+        return fileOp
+
+
+    # handle our error
+    def handleError( self ) -> bool:
+
+        if not self.result.result:
+            
+            if self.result.failCnt == 0:
+                
+                self.result.reset()
+                self.result.failCnt += 1
+                
+                AsyncFileTaskMgr.requestFileOp( self )
+                return True
+
+        return False
+        

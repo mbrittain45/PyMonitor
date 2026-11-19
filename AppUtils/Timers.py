@@ -1,7 +1,6 @@
 
 
 from enum import Enum
-from pickle import NONE
 from typing import Any
 
 # pylint: disable=no-name-in-module

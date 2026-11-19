@@ -1,10 +1,8 @@
 
 
-#import calendar
+from datetime import datetime, date, time, timedelta
 
-from datetime import datetime, date, time #, timedelta
-
-#from AppUtils import GuardedDictionary, StrUtils
+from AppUtils import GuardedDictionary, StrUtils
 
 
 #
@@ -29,7 +27,7 @@ class Epocher:
 #
 # Date Time Format
 #
-class DateTimeFmt:
+class DTFmt:
         
     @staticmethod
     def getYear():
@@ -66,8 +64,6 @@ class DateTimeFmt:
 
 
 
-'''
-
 
 #
 # TimestampParser - Date and Timestamp parser for FileNameDTMarker and 
@@ -75,11 +71,11 @@ class DateTimeFmt:
 class TimestampParser:
 
     @staticmethod
-    def parseDate( dateStr ):
+    def parseDate( dateStr: str ):
 
         tmp      = dateStr 
-        m, tmp = StrUtils.getDelimValue( tmp, "-" )
-        d, tmp = StrUtils.getDelimValue( tmp, "-" )
+        m, tmp   = StrUtils.getDelimValue( tmp, "-" )
+        d, tmp   = StrUtils.getDelimValue( tmp, "-" )
         y        = int(tmp)
 
         return date( int(m), int(d), int(y) )
@@ -87,7 +83,7 @@ class TimestampParser:
 
     # parse the time portion of a file timestamp
     @staticmethod
-    def parseTime( timeStr ):
+    def parseTime( timeStr: str ):
 
         tmp      = timeStr 
         h, tmp = StrUtils.getDelimValue( tmp, "-" )
@@ -111,22 +107,23 @@ class FileNameTimestamp:
 
     # parse the timestamp from a file name in the form:  "_%m-%d-%y_%H-%M-%S_"
     @staticmethod
-    def parseTimestamp( filePath ):
+    def parseTimestamp( filePath: str ):
 
         tmp  = filePath
 
         val, tmp = StrUtils.getDelimValue( tmp, "_" )    # remove leading '_'
-        if val == None or tmp == None:
+
+        if not len(val) or not len(tmp):
             return Epocher.getDateTime()
 
         val, tmp = StrUtils.getDelimValue( tmp, "_" )    # get date string
-        if val == None or tmp == None:
+        if not len(val) or not len(tmp):
             return Epocher.getDateTime()
         
         dateStr = val
 
         val, tmp = StrUtils.getDelimValue( tmp, "_" )    # get time string
-        if val == None or tmp == None:
+        if not len(val) or not len(tmp):
             return Epocher.getDateTime()
 
         timeStr = val
@@ -148,7 +145,7 @@ class FileNameDatestamp:
 
     # parse a file name date marker, which is at the end of the file name in the form: "_%m-%d-%y.%H-%M-%S_"
     @staticmethod
-    def parseDatestamp( filePath ):
+    def parseDatestamp( filePath: str ):
 
         tmp = filePath
         p1  = tmp.find( "_" )
@@ -176,7 +173,7 @@ class FileDelimiterTimestmap:
         
     # parse a file delimiter timestamp in the form: "<*>%m-%d-%y %H:%M:%S<*>"
     @staticmethod
-    def parseTimestamp( timestamp ) -> datetime:
+    def parseTimestamp( timestamp: str ) -> datetime:
     
         tmp = timestamp
         
@@ -201,30 +198,33 @@ class FileDelimiterTimestmap:
         tmp = text
         
         # remove leading "<*>"
-        empty, tmp = StrUtils.getSubstr( tmp, "<*>" )
-        
+        toss, tmp = StrUtils.getSubstr( tmp, "<*>" )
+        assert( len( toss ) )
+
         # parse the timestamps delimited text file
         while len( tmp ) > 0:
 
             timestamp, tmp = StrUtils.getSubstr( tmp, "<*>" )
-
             if tmp.find( "<*>" ) != -1:
                 textBlob, tmp = StrUtils.getSubstr( tmp, "<*>" )
             else:
                 textBlob = tmp
-                tmp.clear()
+                tmp = ""
 
-            retDict[ timestamp ] = textBlob
+            retDict.addItem( timestamp, textBlob )
 
         return retDict
+
+
 
 
 
 #
 # Date/Time Utility Object
 #
-class DateTimeUtils:
+class DTUtils:
         
+    
     # get a time delta in milliseconds
     @staticmethod
     def getMsecTimeDelta( timeout: int ):
@@ -239,7 +239,7 @@ class DateTimeUtils:
 
     @staticmethod
     def getCurTime():
-        datetime.now()
+        return datetime.now()
     
     
     # increment the day portion of a date and rollover to months and years as its incremented
@@ -252,11 +252,11 @@ class DateTimeUtils:
         
     # remove the month from a month-year date
     @staticmethod
-    def subtractMonthFromMonthYear( myStr ) -> str:
+    def subtractMonthFromMonthYear( myStr: str ) -> str:
         
         month = int( myStr[ 0 : 2 ] )
         year  = myStr[ 3 : 7 ]
-        month = DateTimeUtils.subtractMonth( month )
+        month = DTUtils.subtractMonth( month )
         return "{}-{}".format( month, year )
 
 
@@ -296,7 +296,7 @@ class DateTimeUtils:
             
     # get the start date from the number of days in the passed
     @staticmethod
-    def getStartDate( numOfDaysBack ) -> date:
+    def getStartDate( numOfDaysBack: int ) -> date:
         
         year    = int( datetime.now().year )
         month   = int( datetime.now().month )
@@ -311,11 +311,12 @@ class DateTimeUtils:
             year -= 1
     
         # subtract months
-        daysInMonth = DateTimeUtils.getDaysInMonth( month, year )
+        daysInMonth = DTUtils.getDaysInMonth( month, year )
         while numOfDaysBack > daysInMonth:
+
             numOfDaysBack   -= daysInMonth
-            month           = DateTimeUtils.subtractMonth( month )
-            daysInMonth     = DateTimeUtils.getDaysInMonth( month, year )
+            month           = DTUtils.subtractMonth( month )
+            daysInMonth     = DTUtils.getDaysInMonth( month, year )
                     
         # subtract days left
         day -= numOfDaysBack
@@ -336,18 +337,24 @@ class DateTimeUtils:
 
     # get a number of week numbers from current backwards (week numbers 1-52)
     @staticmethod
-    def getWeekNumbers( numWeeks ) -> list[ int ]:
+    def getWeekNumbers( numWeeks: int ) -> list[ int ]:
 
-        weekNums    = []
-        weekNum     = DateTimeUtils.getWeekNumber()
+        weekNums: list[int]    = []
+
+        weekNum     = DTUtils.getWeekNumber()
+
         weekNums.append( weekNum )
         numWeeks    -= 1
         while numWeeks:
+
             weekNum   -= 1
+
             if weekNum <= 0:
                 weekNum = 52
+
             weekNums.append( weekNum )
             numWeeks  -= 1
+
         return weekNums
 
 
@@ -359,7 +366,7 @@ class DateTimeUtils:
         if date.today().month == 12:
             year += 1
 
-        endDate = date( year, DateTimeUtils.addMonth( date.today().month), 1 )
+        endDate = date( year, DTUtils.addMonth( date.today().month), 1 )
         endTime = datetime( endDate.year, endDate.month, endDate.day )
 
         return endTime - datetime.now()
@@ -374,7 +381,7 @@ class DateTimeUtils:
             year += 1
 
         now     = datetime.now()
-        endDate = date( year, DateTimeUtils.addMonth( date.today().month), 1 )
+        endDate = date( year, DTUtils.addMonth( date.today().month), 1 )
 
         return datetime( endDate.year, endDate.month, endDate.day, now.hour, now.minute, now.second )
 
@@ -407,12 +414,25 @@ class DateTimeUtils:
         return quart
 
 
+
+    # see if a time is within a time delta
+    @staticmethod
+    def isWithinTimeRange( targetTime: datetime, hours_ago: int ) -> bool:
+        
+        now = datetime.utcnow()     # type: ignore
+        cutoff_time = (now - timedelta( hours=hours_ago ) )   # type: ignore
+  
+        # Check if the target date time is between the cutoff time and the current time
+        return cutoff_time <= targetTime <= now             # type: ignore
+
+
+
 #
 # File Data Time - hold file name. file date and file time
 #
 class FileDateTime:
     
-    def __init__(self, fileName, fileDate, fileTime ) :
+    def __init__(self, fileName: str, fileDate: str, fileTime: str ) :
         
         self.fileName  = fileName
         self.fileDate  = fileDate
@@ -420,4 +440,4 @@ class FileDateTime:
         
         
         
-        '''
+     

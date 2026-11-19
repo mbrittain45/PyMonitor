@@ -24,7 +24,7 @@ class AsyncFileTask( Task ):
         
     
     # process our work
-    def processTask( self ) -> bool:        # type: ignore
+    def processTask( self ) -> bool:
 
         match self.fileOp.type:             # type: ignore
 
@@ -73,7 +73,10 @@ class AsyncFileTask( Task ):
 
         
         self.fileOp.result.setPassed()
-        self.fileOp.parent.fileOpComplete( self.fileOp )
+        if self.fileOp.parent:
+            self.fileOp.parent.fileOpComplete( self.fileOp )
+        else:
+            assert( False )
 
 
    
@@ -100,7 +103,7 @@ class AsyncFileTask( Task ):
             file.close()
 
         self.fileOp.result.setPassed()
-        if self.fileOp.parent:
+        if self.fileOp.parent != None:  # type: ignore
             self.fileOp.parent.fileOpComplete( self.fileOp )
 
 
@@ -128,7 +131,7 @@ class AsyncFileTask( Task ):
             file.close()
 
         self.fileOp.result.setPassed()
-        if self.fileOp.parent:
+        if self.fileOp.parent != None:  # type: ignore
             self.fileOp.parent.fileOpComplete( self.fileOp )
 
 

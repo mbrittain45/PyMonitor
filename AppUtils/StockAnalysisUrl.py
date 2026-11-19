@@ -9,7 +9,9 @@ from enum import Enum
 #
 class StockAnalysisUrl:
 
-    class EUrlType( Enum ):
+
+    # URLS type below in order
+    class EStockUrlType( Enum ):
 
         eOverview           = int(0)
         eIncome             = int(1)
@@ -28,7 +30,9 @@ class StockAnalysisUrl:
         eDividend           = int(14)
         eHistory            = int(15)
         
-    URLS = [ 
+
+    # Stock URLs matching the EUrlType in order
+    StockURLS = [ 
         "https://stockanalysis.com/stocks/{}/",
         "https://stockanalysis.com/stocks/{}/financials/",
         "https://stockanalysis.com/stocks/{}/financials/balance-sheet/",
@@ -48,13 +52,39 @@ class StockAnalysisUrl:
     ]
 
 
-    # get a specific url by type
-    @staticmethod
-    def getUrl( urlType: EUrlType, stockSymbol: str ):
+    # URLS type below in order
+    class EEtfUrlType( Enum ):
 
-        url = StockAnalysisUrl.URLS[ urlType.value ]
-        return url.format( stockSymbol )
+        eOverview           = int(0)
+        eHoldings           = int(1)
+        eDividend           = int(2)
+        eHistory            = int(3)
+        eChart              = int(4)
+
+    
+
+    # Stock URLs matching the EUrlType in order
+    EtfURLS = [ 
+        "https://stockanalysis.com/stocks/{}/",
+        "https://stockanalysis.com/stocks/{}/holdings/",
+        "https://stockanalysis.com/stocks/{}/dividend/",
+        "https://stockanalysis.com/stocks/{}/history/",
+        "https://stockanalysis.com/stocks/{}/chart/"
+    ]
+
+
+
+    # get a specific url for a stock symbol
+    @staticmethod
+    def getStockSymbolUrl( urlType: EStockUrlType, stockSymbol: str ):
+
+        return StockAnalysisUrl.StockURLS[ urlType.value ].format( stockSymbol )
 
 
  
-    
+    # get a specific url for a stock symbol
+    @staticmethod
+    def getETFSymbolUrl( urlType: EEtfUrlType, etfSymbol: str ):
+
+        return StockAnalysisUrl.EtfURLS[ urlType.value ].format( etfSymbol )
+

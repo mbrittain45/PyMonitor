@@ -1,0 +1,148 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>2d06424c-aa8c-4a35-a1c6-80e85cdeaa97</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>StockMonitor</Name>
+    <RootNamespace>StockMonitor</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterPath>C:\Programs\Python\Python314\python.exe</InterpreterPath>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <InterpreterId>Global|PythonCore|3.14</InterpreterId>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppBaseTask\FuncPtrTask.py" />
+    <Compile Include="AppBaseTask\RepeatingFuncPtrTask.py" />
+    <Compile Include="AppBaseTask\RepeatingTask.py" />
+    <Compile Include="AppBaseTask\SingleShotTask.py" />
+    <Compile Include="AppBaseTask\Task.py" />
+    <Compile Include="AppBaseTask\__init__.py" />
+    <Compile Include="AppDefs\Defs.py" />
+    <Compile Include="AppDefs\TestRequest.py" />
+    <Compile Include="AppDefs\ViewData.py" />
+    <Compile Include="AppServices\AppSecurities.py" />
+    <Compile Include="AppServices\FileServices.py" />
+    <Compile Include="AppServices\AppAbbrvApi.py" />
+    <Compile Include="AppUI\BasePage.py" />
+    <Compile Include="AppUI\GenericTable.py" />
+    <Compile Include="AppUI\GenericTableColumn.py" />
+    <Compile Include="AppUI\GenericTableRow.py" />
+    <Compile Include="AppUI\PageUpdateTask.py" />
+    <Compile Include="AppUI\Scratch.py" />
+    <Compile Include="AppUI\TableTracker.py" />
+    <Compile Include="AppServices\__init__.py" />
+    <Compile Include="AppTasks\BaseScraperTask.py" />
+    <Compile Include="AppTasks\AtomScraperTask.py" />
+    <Compile Include="AppTasks\RssScraperTask.py" />
+    <Compile Include="AppTasks\UpdatingTask.py" />
+    <Compile Include="AppUI\AllLayouts.py" />
+    <Compile Include="AppUI\BaseLayout.py" />
+    <Compile Include="AppUI\GenericInputDlg.py" />
+    <Compile Include="AppUI\GenericPage.py" />
+    <Compile Include="AppUI\PageFunctionData.py" />
+    <Compile Include="AppUI\SimpleWidget.py" />
+    <Compile Include="AppUI\__init__.py" />
+    <Compile Include="App\StockAppMenuBar.py" />
+    <Compile Include="App\AppIniFileReader.py" />
+    <Compile Include="App\StockAppStatusBar.py" />
+    <Compile Include="App\StockAppWindow.py" />
+    <Compile Include="App\main.py" />
+    <Compile Include="App\StockApp.py" />
+    <Compile Include="AppDefs\DirDefs.py" />
+    <Compile Include="AppServices\FileMonitorHandler.py" />
+    <Compile Include="AppServices\HttpResponseSerializer.py" />
+    <Compile Include="AppServices\AppIndexer.py" />
+    <Compile Include="AppDefs\Security.py" />
+    <Compile Include="AppServices\UrlRequestTracker.py" />
+    <Compile Include="AppServices\HyperlinkTracker.py" />
+    <Compile Include="AppDefs\NewsEntry.py" />
+    <Compile Include="AppDefs\__init__.py" />
+    <Compile Include="AppTasks\AllETFsTask.py" />
+    <Compile Include="AppTasks\AllStocksTask.py" />
+    <Compile Include="AppBaseTask\TaskManager.py" />
+    <Compile Include="AppTasks\NewsScraperTask.py" />
+    <Compile Include="AppTasks\NewsMiningTask.py" />
+    <Compile Include="AppTasks\__init__.py" />
+    <Compile Include="AppUtils\Containers.py" />
+    <Compile Include="AppUtils\CrcCalculator.py" />
+    <Compile Include="AppUtils\DateTimeUtils.py" />
+    <Compile Include="AppUtils\HtmlParser.py" />
+    <Compile Include="AppUtils\Logger.py" />
+    <Compile Include="AppUtils\PdfReader.py" />
+    <Compile Include="AppUtils\RequestUrl.py" />
+    <Compile Include="AppUtils\StockAnalysisUrl.py" />
+    <Compile Include="AppUtils\StringUtils.py" />
+    <Compile Include="AppUtils\Timers.py" />
+    <Compile Include="AppUtils\__init__.py" />
+    <Compile Include="AppDefs\SecurityStats.py" />
+    <Compile Include="App\__init__.py" />
+    <Compile Include="FileSystem\AsyncFileTask.py" />
+    <Compile Include="FileSystem\AsyncFileTaskMgr.py" />
+    <Compile Include="FileSystem\CompressUtils.py" />
+    <Compile Include="FileSystem\FileMonitorUser.py" />
+    <Compile Include="FileSystem\FileSystem.py" />
+    <Compile Include="FileSystem\FileData.py" />
+    <Compile Include="FileSystem\FileOperation.py" />
+    <Compile Include="FileSystem\FileMonitor.py" />
+    <Compile Include="AppBaseTask\TaskState.py" />
+    <Compile Include="FileSystem\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppBaseTask\" />
+    <Folder Include="AppData\AppCache\" />
+    <Folder Include="AppData\AppInput\" />
+    <Folder Include="AppData\AppOutput\" />
+    <Folder Include="AppData\AppDatabase\" />
+    <Folder Include="AppUtils\" />
+    <Folder Include="AppTasks\" />
+    <Folder Include="AppUI\" />
+    <Folder Include="AppData\" />
+    <Folder Include="App\" />
+    <Folder Include="FileSystem\" />
+    <Folder Include="AppDefs\" />
+    <Folder Include="AppServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scrathch.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.14</Version>
+      <Description>env (Python 3.14 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.14" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>

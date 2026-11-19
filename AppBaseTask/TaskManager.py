@@ -1,20 +1,17 @@
 
 
-import time
 import threading
 
+# pylint: disable=no-name-in-module
+from PySide6.QtCore import QThreadPool, QMutex
 
-from PySide6.QtCore import QThreadPool, QMutexLocker, QMutex, QTimer
 
-from enum import Enum
-
-from AppUtils import GuardedList, GuardedDictionaryList, GuardedDictionary
-
+from App.main import theStockApp
+from AppServices import AppAbbrvApi
+from AppUtils import GuardedList, GuardedQueue, GuardedDictionary
 from AppBaseTask import TaskParent, Task
-
-from AppTasks import AllStocksTask #, AllETFsTask, PreferredStocksTask, WatchdogTask, NewsTask, RssTask, NewsMiningTask, RssMiningTask
-        
-
+from AppTasks import AllStocksTask, AllETFsTask, NewsMiningTask  #, PreferredStocksTask, WatchdogTask, NewsTask, RssTask, NewsMiningTask, RssMiningTask
+from AppUI import GenericPage, PageFunctionData
 
 
 #
@@ -25,11 +22,16 @@ class TaskManager( TaskParent ):
 
     # sleep time while checking if the Apop is still paused
     APP_PAUSED_SLEEP = int(5000)
+    TASK_PAGE        = "Task Page"
+
+    newsMiningTask     = NewsMiningTask( theStockApp )
+    viewUpdateQueue    = GuardedQueue()
+
 
     # init ourself
     def __init__(self):
         
-        QThreadPool.setMaxThreadCount( 64 )
+        QThreadPool.setMaxThreadCount( int(16) ) # type: ignore
         
         self.tasksToStart       = GuardedList()
         
@@ -37,33 +39,50 @@ class TaskManager( TaskParent ):
         self.pausedTimerActive  = False
 
         self.systemTasks        = GuardedDictionary()
-        self.viewUpdateQueue    = GuardedDictionaryList()
+
         self.tasksMutex         = QMutex()
         
-        # start the system tasks and they will start the other tasks
         AllStocksTask( self )
-        
-        #AllETFsTask( self )
+        AllETFsTask( self )
+
         #PreferredStocksTask( self )
 
+        self.pageData = PageFunctionData( AppAbbrvApi.getMainWidget(), self.TASK_PAGE, 2, Task.TASK_VIEW_FIELD_NAMES )
+        self.taskPage = GenericPage( self.pageData )    
+        AppAbbrvApi.getMainWidget().addTab( self.taskPage, self.TASK_PAGE ) 
 
+
+
+    @staticmethod
+    def getMiningTask() -> NewsMiningTask:
+        return TaskManager.newsMiningTask
+
+    
+    def updateTaskStatusPage( self, task: Task ):
+        self.taskPage.updateSingleRow( self.TASK_PAGE, task.getStatusData() )
+   
+
+
+'''
+
+# start the other tasks once the first ones are done
+def startRemainingTasks( self ):
+
+    NewsFeedTask( self )
+    
+    #RssFeedTask( self )
+    #NewsMiningTask( self ) 
+    #ProcessMiningResultsTask( self ) 
+
+   
 #        self.systemTasks.addItem( ESystemTask.eWatchdogTask, WatchdogTask() )
-#        self.systemTasks.addItem( ESystemTask.eNewsTask, NewsTask() )
-#        self.systemTasks.addItem( ESystemTask.eRssTask, RssTask() )
-#        self.systemTasks.addItem( ESystemTask.eNewsTask, NewsMiningTask() )
-#        self.systemTasks.addItem( ESystemTask.eRssTask, RssMiningTask() )
-        #self._systemTasks.append( WatchdogTask( self ) )
-        #self._systemTasks.append( NewsFeedTask( self ) )
-        #self._systemTasks.append( RssFeedTask( self ) )
+       #self._systemTasks.append( WatchdogTask( self ) )
         #self._systemTasks.append( HistoricalTask( self ) )
-        #self._systemTasks.append( NewsMiningTask( self ) )
-        #self._systemTasks.append( ProcessMiningResultsTask( self ) )
         #self._systemTasks.append( OTCStockTask( self ) )
         #self._systemTasks.append( SearchArchivesTask( self ) )
         #self._systemTasks.append( GetFinancialsTask( self ) )
 
 
-#    eNewsMiningTask     = int(6)   # start a mining task to search for gold in the news entries
 #    eDataMiningTask     = int(7)   # data mining task for sentiment analysis and other data processing for each different task
 #    eHistoricalTask     = int(8)   # historical search task
 #    eSearchTask         = int(9)   # search our data task
@@ -80,7 +99,6 @@ class TaskManager( TaskParent ):
        #RepeatingFuncPtrTask( "ViewUpdateFuncTask", self, int(1), self.updateViewsTaskFunc )
 
 
-'''
     # called when one of our tasks is finished
     def taskComplete( self, task: Task ) -> None:
 
@@ -218,20 +236,6 @@ class TaskManager( TaskParent ):
             TaskManager.waitForTask( task )
 
                                 
-    def updateView( self, viewUpdate: ViewUpdate ):
-        self._viewUpdateQueue.addItem( viewUpdate.eViewType, viewUpdate )
-
-
-    def updateViewsTaskFunc( self ):
-
-        viewKeys = self._viewUpdateQueue.getKeys()
-        for viewKey in viewKeys:
-           
-            updateList = self._viewUpdateQueue.getItem( viewKey )
-            if updateList.count() > 0:
-                theApp.getWnd().getChildWindow( viewKey ).update( updateList )
-                                    
-        
 
 
 #
@@ -291,7 +295,5 @@ class EAppObjectType( Enum ):
     self._appObjects.append( StockTrends() ) - once a day
     self._appObjects.append( HistoricalStockTrends() )
     self._appObjects.append( StockMovingAverages() ) - once a day
-
-    '''
 
 '''

@@ -11,9 +11,9 @@ from AppUtils import GuardedList
 
 
 #
-# FileSystemOps - file system operations..directory and file manipulation
+# FileSystem - file system operations..directory and file manipulation
 #
-class FileSystemOps:
+class FileSystem:
 
     PathSep = "/"
 
@@ -35,7 +35,7 @@ class FileSystemOps:
     @staticmethod
     def createDir( path: str ):
    
-        if FileSystemOps.doesDirExist( path ) == False:
+        if FileSystem.doesDirExist( path ) == False:
             os.mkdir( path ) 
             return True
         return False
@@ -45,7 +45,7 @@ class FileSystemOps:
     @staticmethod
     def createDirs( path: str ):
         
-        if FileSystemOps.doesDirExist( path ) == False:
+        if FileSystem.doesDirExist( path ) == False:
             os.makedirs( path ) 
             return True
         return False
@@ -69,7 +69,7 @@ class FileSystemOps:
     @staticmethod
     def getFileSize( fileName: str, binaryFile: bool = True ) -> int:
         
-        if not FileSystemOps.doesFileExist( fileName ):
+        if not FileSystem.doesFileExist( fileName ):
             return int(0)
 
         readType = "r"
@@ -89,18 +89,18 @@ class FileSystemOps:
             
     # find files
     @staticmethod
-    def findFiles( dirPath: str, searchPattern: str ): 
+    def findFiles( dirPath: str, searchPattern: str ) -> list[str]: 
         
-        retFiles = [str]
+        retFiles: list[str] = []
 
-        if FileSystemOps.doesDirExist( dirPath ) == False:
+        if FileSystem.doesDirExist( dirPath ) == False:
             # todo: Logger.error( f"Invalid Directory: {dirPath} requested in FileSystemOps.findFiles" )
             return retFiles
 
         dirList = os.listdir( dirPath ) 
         for filename in dirList:
 
-            filepath = (dirPath + FileSystemOps.PathSep + filename)
+            filepath = (dirPath + FileSystem.PathSep + filename)
             if os.path.isfile( filepath ):
 
                 if filename.find( searchPattern ) != -1:
@@ -114,7 +114,7 @@ class FileSystemOps:
     @staticmethod
     def isFileInDirectory( dirPath: str, fileNamePattern: str ) -> bool:
         
-        if FileSystemOps.doesFileExist( dirPath ) == False:
+        if FileSystem.doesFileExist( dirPath ) == False:
             return False
 
         itemList = os.listdir( dirPath ) 
@@ -131,14 +131,14 @@ class FileSystemOps:
     @staticmethod
     def getFilePath( dirPath: str, fileNamePattern: str ) -> str:
         
-        if FileSystemOps.doesFileExist( dirPath ) == False:
+        if FileSystem.doesFileExist( dirPath ) == False:
             return ""
 
         itemList = os.listdir( dirPath ) 
         for item in itemList:
 
             if item.find( fileNamePattern ) != -1:
-                return (dirPath + FileSystemOps.PathSep + item)
+                return (dirPath + FileSystem.PathSep + item)
 
         return ""
 
@@ -148,22 +148,22 @@ class FileSystemOps:
     @staticmethod
     def searchRecursively( dirPath: str, findFileName: str ) -> str:
 
-        if FileSystemOps.doesFileExist( dirPath ) == False:
+        if FileSystem.doesFileExist( dirPath ) == False:
             return ""
 
         dirList = os.listdir( dirPath ) 
         for entry in dirList:
 
-            if os.path.isdir( (dirPath + FileSystemOps.PathSep + entry) ):
+            if os.path.isdir( (dirPath + FileSystem.PathSep + entry) ):
                 
-                filePath = FileSystemOps.searchRecursively( (dirPath + FileSystemOps.PathSep + entry), findFileName )
+                filePath = FileSystem.searchRecursively( (dirPath + FileSystem.PathSep + entry), findFileName )
                 if len(filePath) > 0:
                     return filePath
 
-            elif os.path.isfile( (dirPath + FileSystemOps.PathSep + entry) ):
+            elif os.path.isfile( (dirPath + FileSystem.PathSep + entry) ):
                 
                 if entry.find( findFileName ) != -1:
-                    return (dirPath + FileSystemOps.PathSep + entry)
+                    return (dirPath + FileSystem.PathSep + entry)
        
         return ""
 
@@ -244,7 +244,12 @@ class FileSystemOps:
 
         return True
 
+    
+    @staticmethod
+    def createFile( filePath: str ) -> None:
 
-
-
+        file = open( filePath, "w", int(-1), encoding="utf-8" )
+        if not file.writable():
+            assert( False )
+        file.close()
 

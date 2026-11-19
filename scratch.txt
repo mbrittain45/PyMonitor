@@ -1,0 +1,725 @@
+cara
+
+8782097660
+        ''' 
+        
+        todo:
+        
+        
+    def 
+        static PySide2.QtGui.QGuiplatformName()¶
+Return type:
+str
+
+This property holds The name of the underlying platform plugin..
+
+The QPA platform plugins are located in qtbase\src\plugins\platforms . At the time of writing, the following platform plugin names are supported:
+
+android
+
+cocoa is a platform plugin for macOS.
+
+directfb
+
+eglfs is a platform plugin for running Qt5 applications on top of EGL and OpenGL ES 2.0 without an actual windowing system (like X11 or Wayland). For more information, see EGLFS.
+
+ios (also used for tvOS)
+
+kms is an experimental platform plugin using kernel modesetting and DRM (Direct Rendering Manager).
+
+linuxfb writes directly to the framebuffer. For more information, see LinuxFB.
+
+minimal is provided as an examples for developers who want to write their own platform plugins. However, you can use the plugin to run GUI applications in environments without a GUI, such as servers.
+
+minimalegl is an example plugin.
+
+offscreen
+
+openwfd
+
+qnx
+
+windows
+
+wayland is a platform plugin for modern Linux desktops and some embedded systems.
+
+xcb is the X11 plugin used on regular desktop Linux platforms.
+        # for holding the stocks displayed - QStandardItemModel
+
+        #treeView = QTreeView(self)
+        #treeView.setModel(myStandardItemModel)
+        #treeView.clicked.connect( self.clicked)
+
+        #def clicked(self, index):
+        #item = myStandardItemModel.itemFromIndex(index)
+
+        #QtGui.QTextDocumentWriter
+        #QKeyEvent
+        #QRegularExpressionValidator
+        #QtCore.QSize
+        #QtCore.QSize
+
+
+    def procEvents(self):
+        self.processEvents()
+
+    def getAllWnds(self):
+        return self.allWindows()
+    def getAppState(self):
+        return self.applicationState()
+    def getClipboard(self):
+        return self.clipboard()
+    def getFocusObject(self):
+        return self.focusObject()
+    def getFocusWnd(self):
+        return self.focusWindow()
+    
+    def getInputMethods(self):
+        return self.inputMethod()
+    
+    def getModalWnd(self):
+        return self._modalWindow()
+    
+    def getMouseButtons(self):
+        return self._mouseButtons()
+    
+    def primaryScreen(self):
+        return self._primaryScreen()
+    
+    def getScreen(self, point):
+        return theApp.screenAt(point)
+    
+    def getAllScreens(self):
+        return theApp.screens()
+    
+    #def getReporter(self):
+    #    return self._objects[ "reporter" ]
+    
+    def getFileMonitor(self):
+        return self._appObjects[ 1 ]
+
+    
+    # private functions
+    
+    def __saveAllData__(self):
+        self._objects[ "taskmgr" ].saveAllData()
+        
+        
+    def __stopUiActivities__(self, state):
+    
+        self._threadMaster.stopUiThread()
+        if state == Qt.ApplicationInactive:
+            self.__slowUiActivities__()
+        else:
+            self.__setUiActive__()
+
+    # Slots
+   
+    @Slot
+    def appStateChanged(self, state):
+     
+        if state == Qt.ApplicationSuspended:
+            self.__SaveAllData()
+        elif state == Qt.ApplicationHidden:
+            self.__StopUiActivities()
+        elif state == Qt.ApplicationInactive:
+            self.__SlowUiActivities()
+        else:
+            self.__SetUiActive()
+
+    @Slot
+    def commitData(self, manager):
+        if manager.allowsInteraction():
+            ret = PySide6.QtWidget.QMessageBox.warning((), "", "Save changes?", PySide6.QtWidget.QMessageBox.Save|PySide6.QtWidget.QMessageBox.Cancel)
+            if ret == PySide6.QtWidget.QMessageBox.Save:
+                manager.release()
+                # todo: database.saveAllData()
+            else:
+                manager.cancel()
+        # else we didnt get permission to interact
+
+    @Slot
+    def appLastWndClosed(self):
+        self.logger.forceWriteLogMsgs()
+        while self._isSavingSession():
+            time.sleep( 1 )
+
+    @Slot
+    def appLayoutChanged(self, direction):
+        self.logger.log( "QApp Layout Changed: {}".format( direction ) )
+
+    @Slot
+    def appScreenChanged(self, screen):
+        self.logger.log( "QApp Screen Changed to: {}".format( screen.name() ) )
+
+    @Slot
+    def appSaveState(self, sessionManager):
+        self.logger.log( "QApp Save State: {}".format( sessionManager ), "INFO" )
+
+    def appScreenAdded(self, screen):
+        self.logger.log( "QApp Screen Added: {} Size: {} x {} ".format( screen.name, screen.size.w, screen.size.h ), "INFO" )
+
+    @Slot
+    def appScreenRemoved(self, screen):
+        self.logger.log( "QApp Screen Removed: {} Size: {} x {} ".format( screen.name, screen.size.w, screen.size.h ), "INFO" )
+
+
+    # todo: tie slot into exiting app                
+    def onExitimg():
+        threadMgr.waitForExit()
+
+
+
+
+
+
+from PySide6.QtWidgets import QMainWindow
+from PySide6.QtGui import QWindow
+
+from UserInterface import StockMenuBar, StockStatusBar
+
+from Utilities import Dictionary
+
+#
+# Stock Window the applications main window
+#
+class StockWindow( QMainWindow ):
+
+    Windows = [ "Main Window", "RSS Feeds", "News Feeds", "All Stocks", "Monitored Stocks", "Daily Loser Stocks", "Daily Winner Stocks" ]
+
+    def __init__(self):
+        super().__init__(self)
+
+        self.windows = Dictionary() # our various windows to be swapped around into the central widget
+        
+        self.setFixedSize( 2200, 1800 )
+        self.setGeometry( 0, 0, 2000, 1500 )
+        self.setMenuBar( StockMenuBar() )
+        self.setStatusBar( StockStatusBar() )
+
+        self.__createChildWindows__()
+        self.__createTableViews__()
+        
+        self.setCentralWidget( self.windows[0] )    # main dummy window
+
+        
+
+            #def setTabPosition (areas, tabPosition)
+            #def setTabShape (tabShape)
+            #def setToolButtonStyle (toolButtonStyle)
+            #def splitDockWidget (after, dockwidget, orientation)
+
+            #def addDockWidget (area, dockwidget, orientation)
+            #def addToolBar (area, toolbar)
+            #def insertToolBar (before, toolbar)
+            
+       '''
+         def __init__( self, parent ):
+        QMenuBar.__init__( self, parent )
+        self.setObjectName("StockMenuBar")
+        #self.menus = Dictionary
+    
+    def __createAction__( self, title, keys, tip, callback ):
+        action = QAction( title, self )
+        action.setShortcuts( keys )
+        action.setStatusTip( tip )
+        action.triggered.connect( callback )
+        return action
+
+    # create the file menu - Shotcuts: A,S,D
+    def __createFileMenu__( self ):
+        newMenu = QMenu( self )
+        newMenu.setObjectName( u"File" )
+        newMenu.addAction( self.createAction( self, u"Start Monitoring", QKeySequence( u"Ctrl+A" ), u"Start the Monitoring Thread", theApp.startMonitoring() ) )
+        newMenu.addAction( self.createAction( self, u"Stop Monitoring", QKeySequence( u"Ctrl+S" ), u"Stop the Monitoring Thread", theApp.stopMonitoring() ) )
+        newMenu.addSeparator()
+        newMenu.addAction( self.createAction( self, u"Dump Statistics", QKeySequence( u"Ctrl+D" ), u"Dump the Application Statistics", theApp.dumpStatistics() ) )
+        newMenu.addSeparator()
+        newMenu.addAction( self.createAction( self, u"Exit", QKeySequence( u"Ctrl+X" ), u"Exit the Application", theApp.exit() ) )
+        self.addAction( newMenu.menuAction() )
+
+    # create the database menu - shortcuts: P,R,C
+    def __createDBMenu__( self ):
+        newMenu = QMenu( self )
+        newMenu.setObjectName( u"Database" )
+        newMenu.addAction( self.createAction( self, u"Duplicate DB", QKeySequence( u"Ctrl+P" ), u"Duplicate the Database Files", theApp.duplicateDB() ) )
+        newMenu.addAction( self.createAction( self, u"Restart DB", QKeySequence( u"Ctrl+R" ), u"Restart the Database Files", theApp.restartDB() ) )
+        newMenu.addAction( self.createAction( self, u"Compress DB", QKeySequence( u"Ctrl+C" ), u"Compress the Database Files", theApp.compressDB() ) )
+        self.addAction( newMenu.menuAction() )
+
+    # create the view menu - all callbacks are above
+    #def __createViewMenu__( self ):
+    #   newMenu = QMenu( self )
+    #   newMenu.setObjectName( u"Views" )
+    #   self._dbMenu.addAction( createAction( self, "Main View", QKeySequence( "Ctrl+m" ), "Show Main View", self.mainView ) )
+    #   self._dbMenu.addAction( createAction( self, "Chart View", QKeySequence( "Ctrl+c" ), "Show Chart View", self.chartView ) )
+    #   self._dbMenu.addAction( createAction( self, "Statistics", QKeySequence( "Ctrl+q" ), "Show Statistics View", self.statsView ) )
+    #   self._dbMenu.addAction( createAction( self, "Restart Database", QKeySequence( "Ctrl+r" ), "Restart the Databases Thread", self.restartDB ) )
+    #   self.addAction( newMenu.menuAction() )
+
+    #def createAnalyticsMenu( self ):
+    #def createReportMenu( self ):
+
+    def doSetup( self, qrect = QRect(0, 0, 1400, 32 ) ):
+        self.setGeometry( qrect ) 
+        self.__createFileMenu__( self )
+        self.__createDBMenu__( self )
+        #self.__createViewMenu__( self )
+        # todo:
+        #self.createAnalysisMenu()
+        #self.createHistoryMenu()
+        
+'''        
+    
+
+
+    # create our child windows
+    def __createChildWindows__(self):
+                
+        i = int(0)
+        while i < len( StockWindow.Windows ):
+            
+            window = QWindow( parent=self )
+            
+            window.setTitle( StockWindow.Windows[i] )
+            window.setGeometry( 0, 0, 1800, 1400 )
+            window.setContentsMargins( 50, 100, 50, 100 )
+            
+            self.windows[ StockWindow.Windows[i] ] = window
+            i += 1
+
+
+
+
+
+    def createPopupMenu(self):
+        return self.createPopupMenu()
+
+    
+
+
+    # QTableWidget
+
+'''
+
+class DemoWindow(QMainWindow):
+   def __init__(self):
+       super().__init__()
+
+       # Main Widget and Layout
+       main_widget = QWidget()
+       self.setCentralWidget(main_widget)
+       main_layout = QVBoxLayout(main_widget)
+
+       # Function to add widget with label
+       def add_widget_with_label(layout, widget, label_text):
+           hbox = QHBoxLayout()
+           label = QLabel(label_text)
+           hbox.addWidget(label)
+           hbox.addWidget(widget)
+           layout.addLayout(hbox)
+
+       # QLabel
+       self.label = QLabel('Hello PySide6!')
+       add_widget_with_label(main_layout, self.label, 'QLabel:')
+
+       # QPushButton
+       self.button = QPushButton('Click Me')
+       self.button.clicked.connect(self.on_button_clicked)
+       add_widget_with_label(main_layout, self.button, 'QPushButton:')
+
+       # QLineEdit
+       self.line_edit = QLineEdit()
+       add_widget_with_label(main_layout, self.line_edit, 'QLineEdit:')
+
+       # QComboBox
+       self.combo_box = QComboBox()
+       self.combo_box.addItems(['Option 1', 'Option 2', 'Option 3'])
+       add_widget_with_label(main_layout, self.combo_box, 'QComboBox:')
+
+       # QCheckBox
+       self.check_box = QCheckBox('Check Me')
+       add_widget_with_label(main_layout, self.check_box, 'QCheckBox:')
+
+       # QRadioButton
+       self.radio_button = QRadioButton('Radio Button')
+       add_widget_with_label(main_layout, self.radio_button, 'QRadioButton:')
+
+       # QTextEdit
+       self.text_edit = QTextEdit()
+       add_widget_with_label(main_layout, self.text_edit, 'QTextEdit:')
+
+       # QSlider
+       self.slider = QSlider()
+       add_widget_with_label(main_layout, self.slider, 'QSlider:')
+
+       # QSpinBox
+       self.spin_box = QSpinBox()
+       add_widget_with_label(main_layout, self.spin_box, 'QSpinBox:')
+
+       # QProgressBar
+       self.progress_bar = QProgressBar()
+       add_widget_with_label(main_layout, self.progress_bar, 'QProgressBar:')
+
+       # QTableWidget
+       self.table_widget = QTableWidget(5, 3) 
+       for i in range(5):
+           for j in range(3):
+               item = QTableWidgetItem(f"Cell {i+1},{j+1}")
+               self.table_widget.setItem(i, j, item)
+       add_widget_with_label(main_layout, self.table_widget, 'QTableWidget:')
+
+   def on_button_clicked(self):
+       self.label.setText('Button Clicked!')
+
+# Run the application
+app = QApplication(sys.argv)
+window = DemoWindow()
+window.show()
+sys.exit(app.exec_())
+
+
+
+
+
+
+PySide6.QtGui.QWindow.setWindowState(state)
+PARAMETERS:
+state – WindowState
+
+set the screen-occupation state of the window
+
+The window state represents whether the window appears in the windowing system as maximized, minimized, fullscreen, or normal.
+
+The enum value Qt::WindowActive is not an accepted parameter.
+
+See also
+
+windowState() showNormal() showFullScreen() showMinimized() showMaximized() setWindowStates()
+
+
+
+
+PySide6.QtGui.QWindow.setGeometry(posx, posy, w, h)
+PARAMETERS:
+posx – int
+
+posy – int
+
+w – int
+
+h – int
+
+Sets the geometry of the window, excluding its window frame, to a rectangle constructed from posx, posy, w and h.
+
+The geometry is in relation to the virtualGeometry() of its screen.
+ # Function to add widget with label
+       def add_widget_with_label(layout, widget, label_text):
+           hbox = QHBoxLayout()
+           label = QLabel(label_text)
+           hbox.addWidget(label)
+           hbox.addWidget(widget)
+           layout.addLayout(hbox)
+
+       # QLabel
+       self.label = QLabel('Hello PySide6!')
+       add_widget_with_label(main_layout, self.label, 'QLabel:')
+
+       # QPushButton
+       self.button = QPushButton('Click Me')
+       self.button.clicked.connect(self.on_button_clicked)
+       add_widget_with_label(main_layout, self.button, 'QPushButton:')
+
+       # QLineEdit
+       self.line_edit = QLineEdit()
+       add_widget_with_label(main_layout, self.line_edit, 'QLineEdit:')
+
+def setBaseSize (size)
+
+def setCursor (arg__1)
+
+def setFilePath (filePath)
+
+def setFlag (arg__1[, on=true])
+
+def setFlags (flags)
+
+def setFormat (format)
+
+def setFramePosition (point)
+
+def setIcon (icon)
+
+def setKeyboardGrabEnabled (grab)
+
+def setMask (region)
+
+def setMaximumSize (size)
+
+def setMinimumSize (size)
+
+def setModality (modality)
+
+def setMouseGrabEnabled (grab)
+
+def setOpacity (level)
+
+def setParent (parent)
+
+def setPosition (pt)
+
+def setPosition (posx, posy)
+
+def setScreen (screen)
+
+def setSizeIncrement (size)
+
+def setSurfaceType (surfaceType)
+
+def setTransientParent (parent)
+
+def setVisibility (v)
+
+def setWindowState (state)
+
+def setWindowStates (states)
+
+def sizeIncrement ()
+
+def title ()
+
+def transientParent ()
+
+def type ()
+
+def unsetCursor ()
+
+def visibility ()
+
+def width ()
+
+def winId ()
+
+def windowState ()
+
+def windowStates ()
+
+def x ()
+
+def y ()
+
+
+
+
+
+    # QTableWidget
+
+'''
+
+class DemoWindow(QMainWindow):
+   def __init__(self):
+       super().__init__()
+
+       # Main Widget and Layout
+       main_widget = QWidget()
+       self.setCentralWidget(main_widget)
+       main_layout = QVBoxLayout(main_widget)
+
+       # Function to add widget with label
+       def add_widget_with_label(layout, widget, label_text):
+           hbox = QHBoxLayout()
+           label = QLabel(label_text)
+           hbox.addWidget(label)
+           hbox.addWidget(widget)
+           layout.addLayout(hbox)
+
+       # QLabel
+       self.label = QLabel('Hello PySide6!')
+       add_widget_with_label(main_layout, self.label, 'QLabel:')
+
+       # QPushButton
+       self.button = QPushButton('Click Me')
+       self.button.clicked.connect(self.on_button_clicked)
+       add_widget_with_label(main_layout, self.button, 'QPushButton:')
+
+       # QLineEdit
+       self.line_edit = QLineEdit()
+       add_widget_with_label(main_layout, self.line_edit, 'QLineEdit:')
+
+       # QComboBox
+       self.combo_box = QComboBox()
+       self.combo_box.addItems(['Option 1', 'Option 2', 'Option 3'])
+       add_widget_with_label(main_layout, self.combo_box, 'QComboBox:')
+
+       # QCheckBox
+       self.check_box = QCheckBox('Check Me')
+       add_widget_with_label(main_layout, self.check_box, 'QCheckBox:')
+
+       # QRadioButton
+       self.radio_button = QRadioButton('Radio Button')
+       add_widget_with_label(main_layout, self.radio_button, 'QRadioButton:')
+
+       # QTextEdit
+       self.text_edit = QTextEdit()
+       add_widget_with_label(main_layout, self.text_edit, 'QTextEdit:')
+
+       # QSlider
+       self.slider = QSlider()
+       add_widget_with_label(main_layout, self.slider, 'QSlider:')
+
+       # QSpinBox
+       self.spin_box = QSpinBox()
+       add_widget_with_label(main_layout, self.spin_box, 'QSpinBox:')
+
+       # QProgressBar
+       self.progress_bar = QProgressBar()
+       add_widget_with_label(main_layout, self.progress_bar, 'QProgressBar:')
+
+       # QTableWidget
+       self.table_widget = QTableWidget(5, 3) 
+       for i in range(5):
+           for j in range(3):
+               item = QTableWidgetItem(f"Cell {i+1},{j+1}")
+               self.table_widget.setItem(i, j, item)
+       add_widget_with_label(main_layout, self.table_widget, 'QTableWidget:')
+
+   def on_button_clicked(self):
+       self.label.setText('Button Clicked!')
+
+# Run the application
+app = QApplication(sys.argv)
+window = DemoWindow()
+window.show()
+sys.exit(app.exec_())
+
+
+
+
+
+
+PySide6.QtGui.QWindow.setWindowState(state)
+PARAMETERS:
+state – WindowState
+
+set the screen-occupation state of the window
+
+The window state represents whether the window appears in the windowing system as maximized, minimized, fullscreen, or normal.
+
+The enum value Qt::WindowActive is not an accepted parameter.
+
+See also
+
+windowState() showNormal() showFullScreen() showMinimized() showMaximized() setWindowStates()
+
+
+
+
+PySide6.QtGui.QWindow.setGeometry(posx, posy, w, h)
+PARAMETERS:
+posx – int
+
+posy – int
+
+w – int
+
+h – int
+
+Sets the geometry of the window, excluding its window frame, to a rectangle constructed from posx, posy, w and h.
+
+The geometry is in relation to the virtualGeometry() of its screen.
+ # Function to add widget with label
+       def add_widget_with_label(layout, widget, label_text):
+           hbox = QHBoxLayout()
+           label = QLabel(label_text)
+           hbox.addWidget(label)
+           hbox.addWidget(widget)
+           layout.addLayout(hbox)
+
+       # QLabel
+       self.label = QLabel('Hello PySide6!')
+       add_widget_with_label(main_layout, self.label, 'QLabel:')
+
+       # QPushButton
+       self.button = QPushButton('Click Me')
+       self.button.clicked.connect(self.on_button_clicked)
+       add_widget_with_label(main_layout, self.button, 'QPushButton:')
+
+       # QLineEdit
+       self.line_edit = QLineEdit()
+       add_widget_with_label(main_layout, self.line_edit, 'QLineEdit:')
+
+def setBaseSize (size)
+
+def setCursor (arg__1)
+
+def setFilePath (filePath)
+
+def setFlag (arg__1[, on=true])
+
+def setFlags (flags)
+
+def setFormat (format)
+
+def setFramePosition (point)
+
+def setIcon (icon)
+
+def setKeyboardGrabEnabled (grab)
+
+def setMask (region)
+
+def setMaximumSize (size)
+
+def setMinimumSize (size)
+
+def setModality (modality)
+
+def setMouseGrabEnabled (grab)
+
+def setOpacity (level)
+
+def setParent (parent)
+
+def setPosition (pt)
+
+def setPosition (posx, posy)
+
+def setScreen (screen)
+
+def setSizeIncrement (size)
+
+def setSurfaceType (surfaceType)
+
+def setTransientParent (parent)
+
+def setVisibility (v)
+
+def setWindowState (state)
+
+def setWindowStates (states)
+
+def sizeIncrement ()
+
+def title ()
+
+def transientParent ()
+
+def type ()
+
+def unsetCursor ()
+
+def visibility ()
+
+def width ()
+
+def winId ()
+
+def windowState ()
+
+def windowStates ()
+
+def x ()
+
+def y ()
+
+'''

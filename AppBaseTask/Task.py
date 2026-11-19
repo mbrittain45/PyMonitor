@@ -1,29 +1,20 @@
 
 # pylint: disable=no-name-in-module
 from PySide6.QtCore import QRunnable
-
-
-from PySide6.QtCore import QObject, Slot #todo: QTimer, Slot
+from PySide6.QtCore import QObject, Slot, QTimer
 
 from abc import ABC, abstractmethod
-
-#from datetime import datetime
-
 from enum import Enum
 
 from AppBaseTask import TaskState, TaskParent, ETaskState
+from AppUtils import Logger, DTUtils
+
+from App.main import theStockApp
+
+from typing import Any
 
 
-''' TODO:
-from PySide6.QtCore import QObject, Signal
-
-class MyObject(QObject):
-    my_signal = Signal() # pylint: disable=no-member
-'''
-
-#
 # Task Result enum
-#
 class ETaskResult( Enum ):
 
     eUnknown        = int(0)
@@ -34,15 +25,6 @@ class ETaskResult( Enum ):
     eForcedExit     = int(5)
   
 
-#
-# Abstract Task - all tasks must override processTask, which is where they do their work
-#
-class AbstractTask(ABC):
-
-    @abstractmethod
-    def processTask(self) -> ETaskResult:
-        pass
-
 
 
 #
@@ -52,12 +34,18 @@ class AbstractTask(ABC):
 #
 #   all Tasks must have this function since that is where their work is done
 #   @abstractmethod
-#   def processTask(self) -> ETaskResult:
+#   def processTask(self) -> bool:
 #       pass
 #
-class Task( QRunnable, AbstractTask, TaskState, QObject ):
+class Task( QRunnable, TaskState, QObject, ABC ):
         
-    TASK_VIEW_FIELD_NAMES = [ "UID", "Name", "State", "Previous State", "Next State", "Next Runtime", "Result", "Error" ]
+    TASK_VIEW_FIELD_NAMES = [ "UID", "Name", "State", "Previous State", "Next State", "Next Runtime", "Last Error" ]
+
+    # must be overridden
+    @abstractmethod
+    def processTask(self) -> bool:
+        pass
+
 
     #    
     # init ourself
@@ -70,11 +58,16 @@ class Task( QRunnable, AbstractTask, TaskState, QObject ):
         TaskState.__init__(self, taskName, repeatTask, parent )
 
         self.sleepTimeout   = int(5)
-        self.result         = ETaskResult.eUnknown
+        self.result         = False
         self.exitFlag       = False
-#       self.lastRuntime    = DateTimeUtils.getCurTime() 
-#       self.nextRuntime    = Epocher.getTime()
-       
+        self.nextRuntime    = 0
+        self.cycleCount     = 0
+ 
+
+    # get task status page data
+    def getStatusData( self ) -> list[Any]:
+        return [ self.taskId, self.taskName, self.stateOfTask.state, self.stateOfTask.prevState, self.stateOfTask.nextState, self.nextRuntime, self.error ]
+
  
     # our timer callback function
     @Slot()
@@ -90,7 +83,7 @@ class Task( QRunnable, AbstractTask, TaskState, QObject ):
 
         self.error          = ""
         #self.nextRuntime    = Epocher.getTime()
-        #self.lastRuntime    = DateTimeUtils.getCurTime()
+        #self.lastRuntime    = DTUtils.getCurTime()
         self.__clearTransitionTimes__( ETaskState.eRunning )
 
 
@@ -110,26 +103,34 @@ class Task( QRunnable, AbstractTask, TaskState, QObject ):
     def __processRepeatingTask__( self ):
 
         # if the task run failed 
-        if self.result == ETaskResult.eFailed:
+        if not self.result:
+
             # if too many errors stop the task from repeating
             self.errorCnt += 1
             if self.errorCnt > 1:
+
                 # set we are complete due too failures
                 self.stateOfTask.setState( ETaskState.eDoneFailed )
                 self.__processComplete__()
+                theStockApp.getTaskMgr().updateTaskStatusPage( self )
                 return 
 
         # if succeeded clear error count
-        if self.result == ETaskResult.eSucceeded:
+        if self.result:
             self.errorCnt = 0
         
         # set state to sleeping awaiting wakeup timer
         self.stateOfTask.setState( ETaskState.eSleeping )
-        #timeout = ( int(self.sleepTimeout) * int(60) ) * int(1000)
+
+        timeout = int(self.sleepTimeout * int(1000)) # sleep for a few seconds
+
         # set our next runtime / wakeup time
-        # TODO: self.nextRuntime = (DateTimeUtils.getCurTime() + DateTimeUtils.getMsecTimeDelta( timeout ))
+        self.nextRuntime = (DTUtils.getCurTime() + DTUtils.getMsecTimeDelta( timeout ))
+        
         # set our callback timer
-        #   QTimer.singleShot( timeout, self, self.wakeupTimerCallback )
+        QTimer.singleShot( timeout, self, self.wakeupTimerCallback )
+
+        theStockApp.getTaskMgr().updateTaskStatusPage( self )
 
 
 
@@ -138,12 +139,18 @@ class Task( QRunnable, AbstractTask, TaskState, QObject ):
     #
     def run( self ):
         
+        if self.repeat:
+            theStockApp.getTaskMgr().updateTaskStatusPage( self )
+
         self.__clearRuntimeData__()
 
         if self.__shouldExitTask__():
             return
 
         self.stateOfTask.setState( ETaskState.eRunning ) # set our new running state
+
+        if self.repeat:
+            theStockApp.getTaskMgr().updateTaskStatusPage( self )        
         
         try:
 
@@ -188,15 +195,11 @@ class Task( QRunnable, AbstractTask, TaskState, QObject ):
        
         # set task to complete - done forever and ready to be deleted
     
-        # unregister ourself w/ the taskmgr
-        #if self.stateOfTask.registered:
-            # todo: theApp.getTaskMgr().unregisterTask( self )
-        
-        #if len( self.error ) > 0:
-        # todo: Logger.error( self.error )
+        if len( self.error ) > 0:
+            Logger.err( self.error )
 
-        # todo:
         # tell our parent we are done completely
-        #self.parent.taskComplete( self )
+        if self.parent:                             # type: ignore
+            self.parent.taskComplete( self )        # type: ignore
         
          

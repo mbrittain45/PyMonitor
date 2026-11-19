@@ -28,14 +28,14 @@ class AsyncFileTaskMgr( Task, TaskParent ):
     def requestFileOp( fileOp: FileOperation ) -> bool:
 
         if fileOp.isValid():
-            AsyncFileTaskMgr.FileOpQueue.addItem( fileOp )    # type: ignore
+            AsyncFileTaskMgr.FileOpQueue.addTail( fileOp )    # type: ignore
             return True
         else:
             fileOp.parent.fileOpComplete( fileOp )
             return False
         
 
-    def processTask(self) -> bool: # type: ignore
+    def processTask(self) -> bool:
     
         if self.suspend:
             return True
@@ -43,8 +43,7 @@ class AsyncFileTaskMgr( Task, TaskParent ):
         if self.FileOpQueue.getCount() > 0:
 
             while self.FileOpQueue.getCount() > 0:
-
-                AsyncFileTask( self.FileOpQueue.getHead(), self )
+                AsyncFileTask( self.FileOpQueue.popHead(), self )
 
         return True
 

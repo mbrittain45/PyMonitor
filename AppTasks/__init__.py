@@ -1,8 +1,21 @@
 
+
+from .AllETFsTask import *
+
 from .AllStocksTask import *
 
+from .AtomScraperTask import *
+
+from .BaseScraperTask import *
+
+from .NewsScraperTask import *
+
+from .RssScraperTask import *
+
+from .NewsMiningTask import *
 
 
+'''
 
 from .DailyMoversTask import *
 
@@ -28,3 +41,4 @@ from .RssNewsLinkProcessorTask import *
 from .TaskManager import *
 
 from .VolumeLeadersTask import *
+'''

@@ -1,6 +1,7 @@
 
 
-#from App import theApp, Defs
+
+from AppDefs import Defs, DirDefs
     
 
 # String methods
@@ -59,7 +60,7 @@ class StrUtils:
 
     # get a websites name from the url remove the www. and .com                                              
     @staticmethod
-    def getWebsiteName( url: str ) -> str:
+    def getWebsiteName( url: str ):
 
         tmp = url
         pos = tmp.find( "www." )
@@ -73,17 +74,26 @@ class StrUtils:
     @staticmethod
     def getDelimValue( strVal: str, delim: str ):
 
-        emptyStr = ""
-
         p       = strVal.find( delim )
         if p == -1:
-            return emptyStr, emptyStr
+            return "", ""
 
         retVal  = strVal[ 0 : p ]   # get value
         p       += 1
         strVal  = strVal[ p : len(strVal) - p ] # remove value from string
 
         return retVal, strVal # return both
+
+
+    @staticmethod
+    def cleanseNumberStr( fstr: str ) -> str:
+
+        rstr = ""
+        for ch in fstr:
+            if (ch >= '0' and ch <= '9') or ch == '.' or ch == "-" or ch == "+":
+                 rstr += ch
+        return rstr
+            
 
 
     # convert a string to a float
@@ -94,7 +104,8 @@ class StrUtils:
             fVal = float( fstr )            
             return fVal
         except:
-            return float( -0.0 )
+            rstr = StrUtils.cleanseNumberStr( fstr ) # type: ignore
+            return StrUtils.stringToFloat( rstr )    # type: ignore
 
 
     # convert a string to an int
@@ -105,36 +116,22 @@ class StrUtils:
             iVal = int( istr )            
             return iVal
         except:
-            return int(-0)
+            rstr = StrUtils.cleanseNumberStr( istr ) # type: ignore
+            return StrUtils.stringToInt( rstr )      # type: ignore
 
-
-    # get a float value or int value
-    @staticmethod
-    def stringToNumber( strVal: str ):
-
-        fVal = StrUtils.stringToFloat( strVal )
-        if fVal != float(-0.0):
-            return fVal
-
-        iVal = StrUtils.stringToInt( strVal )
-        if iVal != int(-0):
-            return iVal
             
-        return int(-0)
-
-        
+                
     # get number values
     @staticmethod
-    def stringsToNumbers( strValues: list[str] ):   # type: ignore
+    def stringsToNumbers( strValues: list[str] ) -> list[float]:
 
-        numValues = []
-        
+        fValues: list[float] = []
         for strVal in strValues:
-            num = StrUtils.stringToNumber( strVal )
-            if num != int(-0):
-                numValues.append( num )     # type: ignore
+        
+            f = StrUtils.stringToFloat( strVal )
+            fValues.append( f )
 
-        return numValues        # type: ignore
+        return fValues
 
 
     # trim both end of a string
@@ -163,7 +160,7 @@ class StrUtils:
 
     # clean a possible numeric string of '.' and '-' since those chars make it invalid numerically
     @staticmethod
-    def cleanseNumericString( numStr: str ) -> str:
+    def cleanseNumericString( numStr: str ):
 
         p = numStr.find( '-' )
         if p != -1:
@@ -180,11 +177,8 @@ class StrUtils:
     @staticmethod
     def isStringNumeric( numStr: str ) -> bool:
 
-        if numStr.isnumeric():
-             return True
-            
         numStr = StrUtils.cleanseNumericString( numStr )
-        return numStr.isnumeric()
+        return numStr.isnumeric()   
 
 
     # reverse a string
@@ -194,16 +188,17 @@ class StrUtils:
         retStr = ''
         index  = len( normStr )
         index  -= 1
+
         while index > -1:
             retStr += normStr[ index ]
             index -= 1
+
         return retStr
 
-    
-'''
+     
     # get a soundEx return value 1-4
     @staticmethod
-    def getSoundExValue( matches, length ):
+    def getSoundExValue( matches: int, length: int ):
 
         if matches == 0:
             return 0
@@ -220,7 +215,7 @@ class StrUtils:
     # Compares two SOUNDEX values, and returns an integer value 1-4
     #
     @staticmethod
-    def difference( str1: str, str2: str ) -> str:
+    def difference( str1: str, str2: str ):
 
         matches = int(0)
         index   = int(0)
@@ -249,16 +244,16 @@ class StrUtils:
         return StrUtils.getSoundExValue( matches, length )
 
 
+    '''
     # get substr by position
     @staticmethod
-    def getSubstrByPosition( argStr, endPos ):
+    def getSubstrByPosition( argStr: str, endPos: int ):
         
-        numStr = StrUtils.cleanseNumericString( endPos )
+        numStr = StrUtils.cleanseNumericString( argStr )
         if StrUtils.isStringNumeric( numStr ):
             return argStr[ 0 : int( numStr ) ]
         assert( False )
         return ''
-
     
     
     # get substr by positions
@@ -273,29 +268,30 @@ class StrUtils:
 
         assert( False )
         return ''
-   
+    '''   
 
 
     # add spaces before capital letters in the string
     @staticmethod
-    def spaceCamelCase( stringToSpace: str ):
-
+    def spaceCamelCase( stringToSpace: str ) -> str:
+        
+        c = 0 
         retStr = ""
 
         for c in stringToSpace:
 
-            if c >= 65 and c <= 90:
+            if 65 <= c <= 90:   # type: ignore
                 retStr += " "
-            retStr += c
+            retStr += c     # type: ignore
             
-        return retStr[ 1 : (len( retStr )  - 1) ]
+        return retStr[ 1 : (len( retStr )  - 1) ]   # type: ignore
 
 
     # parse a paragraph into sentences
     @staticmethod
-    def parseSentences( block: str ):
+    def parseSentences( block: str ) -> list[str]:
         
-        lines       = []
+        lines: list[str] = []
         
         blockLen    = len( block )
         while blockLen > 0:
@@ -326,19 +322,19 @@ class StrUtils:
     
     # remove any comment in a line where comments start with #
     @staticmethod
-    def removeComment( line ):
+    def removeComment( line: str ) -> str:
         
         line.strip()
         p = line.find( '#' )
         if p != -1:
-            line = line[ p + 1, (len( line ) - (p + 1)) ]
+            line = line[ p + 1, (len( line ) - (p + 1)) ] # type: ignore
             line.strip()
         return line
 
 
     # parse key=value from file data
     @staticmethod
-    def parseKeyValue( key, fdata ):
+    def parseKeyValue( key: str, fdata: str ):
         
         pos = fdata.find( key )
 
@@ -353,40 +349,43 @@ class StrUtils:
 
     # parse key=value from file line 
     @staticmethod
-    def parseIniKeyValue( fileline ):
+    def parseIniKeyValue( fileline: str ) -> tuple[str, str]:
         
         pos = fileline.find( '=' )
         if pos == -1:
-            return ''
+            return ( " ", " " )
 
         key         = fileline[ 0 : pos ]
         fileline    = fileline[ pos + 1 : (len( fileline ) - (pos + 1)) ]
 
-        return key, fileline
+        return ( key, fileline )
 
 
     
     # get a substring by delimiter and remove it from the string
     @staticmethod
-    def getSubstr( strVal, strDelim ):
+    def getSubstr( strVal: str, strDelim: str ) -> tuple[str, str]:
+
+        subStr = ""
+        retStr = ""
 
         pos = strVal.find( strDelim )
         if pos == -1:
-            return None
+            return subStr, retStr
 
         epos   = (pos + len( strDelim ))
 
         subStr = StrUtils.trim( strVal[ 0 : pos ] )
         retStr = StrUtils.trim( strVal[ epos : (len( strVal ) - epos) ] )
 
-        return subStr, retStr
+        return ( subStr, retStr )
 
 
     # get the main string for a title from the file name
     @staticmethod
-    def getFileNameNormalized( filePath ):
+    def getFileNameNormalized( filePath: str ) -> str:
 
-        pos1 = filePath.rfind( Defs.DIR_SEP )
+        pos1 = filePath.rfind( DirDefs.SEP )
         pos2 = filePath.rfind( "." )
         pos2 += 1
 
@@ -396,7 +395,7 @@ class StrUtils:
 
     # remove spaces from a string
     @staticmethod
-    def removeSpaces( strVal ):
+    def removeSpaces( strVal: str ) -> str:
 
         retVal  = ""
         
@@ -409,7 +408,7 @@ class StrUtils:
 
 
     # get the main url address
-    def getMainUrlAddress( self, url: str ):
+    def getMainUrlAddress( self, url: str ) -> str:
 
         p = url.find( "." )
         if p != -1:
@@ -420,4 +419,3 @@ class StrUtils:
 
 
 
-'''

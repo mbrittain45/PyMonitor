@@ -1,8 +1,8 @@
 
 
 
-from AppUtils import Logger, DateTimeFmt
-from FileSystem import AsyncFileTaskMgr
+from AppUtils import Logger, DTFmt
+from FileSystem import AsyncFileTaskMgr, FileOperation
 
 
 #
@@ -185,6 +185,7 @@ class HtmlParser:
         return BaseHtmlParser.removeTag( html, HtmlParser.HLINK )
     
 
+
     # parse a table row <tr></tr>
     @staticmethod
     def parseTableRow( html: str ) -> str:
@@ -291,8 +292,7 @@ class HtmlParser:
 
             if len( fileName ) > 0:
 
-                data    = [section]
-                fileOp  = FileOperation.createWriteFileOp( fileName, data, None, False ) # type: ignore
+                fileOp  = FileOperation.createWriteBloblFileOp( fileName, section, None, False ) # type: ignore
                 AsyncFileTaskMgr.requestFileOp( fileOp )         # type: ignore
 
             return section
@@ -308,7 +308,7 @@ class HtmlParser:
         HREF_BEGIN_TAG = "<a href="
         HREF_END_TAG   = "\"a"
         
-        hyperlinks = []
+        hyperlinks: list[str] = []
         
         while len( html ) > 0:
             
@@ -353,12 +353,12 @@ class HtmlParser:
     @staticmethod
     def parsePublishDate( html: str ) -> str:
 
-        pos = html.find( DateTimeFmt.getYear() )
+        pos = html.find( DTFmt.getYear() )
         if pos == -1:
-            pos = html.find( DateTimeFmt.getTwoDigitYear() )
+            pos = html.find( DTFmt.getTwoDigitYear() )
 
         # find the end position
-        epos = (pos + len( DateTimeFmt.getYear() ))
+        epos = (pos + len( DTFmt.getYear() ))
         while True:
 
             if html[ epos + 1 ] != " ":

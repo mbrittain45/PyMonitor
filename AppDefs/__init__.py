@@ -1,9 +1,16 @@
 
 
-from .AppDefs import *
+from .Defs import *
 
 from .DirDefs import *
 
-from .ViewDefs import *
+from .NewsEntry import *
 
-from .Views import *
+from .ViewData import *
+
+from .Security import *
+
+from .SecurityStats import *
+
+from .TestRequest import *
+

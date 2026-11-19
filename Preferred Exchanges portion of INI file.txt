@@ -1,0 +1,15 @@
+
+#
+# This file is the preferred stocks file, which will list all the company names and/or stock symbols
+# that you are most interested in. This file will help cleanse all the data read via the RSS Feeds
+# and be used to gather more specific data for this list than a generic company stock would received
+#
+
+#
+# Preferred Exchanges: Amex, Nyse, Nasdaq.....or others for other see the Exchange Informaton File
+#
+
+PreferredEXchanges=Nyse, Nasdaq
+
+#
+# 

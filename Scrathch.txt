@@ -1,0 +1,1873 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+etf 
+Assets	$15.89B
+Expense Ratio	0.59%
+Dividend Yield	1.64%
+Payout Frequency	Annual
+Payout Ratio	26.68%
+Beta	1.16
+Holdings	90
+Inception Date	May 9, 2000
+
+stock
+Market Cap	3.59B -75.3%
+Revenue (ttm)	2.35B +59.0%
+Net Income	128.37M +1.8%
+EPS	0.51 -3.7%
+Forward PE	31.45
+Beta	2.61
+Analysts	Hold
+Price Target	26.38 (+67.6%)
+Earnings Date	Feb 23, 2026
+
+
+shared:
+
+pe_ratio
+shares_outstanding
+dividend
+ex-dividend_date
+52-week_range
+days_range
+open
+previous_close
+volume
+
+
+#from typing import List, Deque, Dict, DefaultDict, OrderedDict, Union, Optional, 
+
+
+    # if we ever become done just restart ourself
+    def taskComplete( self, task ):
+
+        assert( task.getUID() == self.getUID() )
+        theApp.getTaskMgr().startTask( self )
+
+
+
+    # clean up our complete tasks
+    def taskComplete( self, task ):
+
+        del task
+        task = None
+
+
+
+
+    # file operation completed
+    def fileOpComplete(self, fileOp: FileOperation ) -> None:
+        
+        # todo:
+
+
+
+
+#
+# FileMonitorUser - all must override these functions to use the FileMonitor
+# 
+class FileMonitorUser(ABC):
+
+    @abstractmethod
+    def directoryChanged( self, path: str ):
+        pass
+
+    @abstractmethod
+    def fileChanged( self, path: str ):
+        pass
+
+
+
+
+    1. Write the datetime object to a file 
+
+from datetime import datetime
+
+now = datetime.now()
+
+with open(file_name, 'w') as f:
+    f.write(now.isoformat())
+
+
+
+2. Read the datetime object back from the file 
+
+from datetime import datetime
+
+with open(file_name, 'r') as f:
+    datetime_string = f.read()
+
+recovered_datetime = datetime.fromisoformat(datetime_string)
+
+
+
+
+
+
+
+#
+# Iterator object - forward iterator w/ previous value retrieval only
+#
+class Iterator:
+    
+    # init ourself
+    def __init__( self, iterVals, endVal = "END" ):
+        self.iter    = iter( iterVals, endVal )
+        self.endVal  = endVal
+        self.nextVal = None
+        self.prevVal = None
+        
+    # iterate forward
+    def getNext(self):
+        self.prevVal = self.iter
+        self.nextVal = next( self.iter, self.endVal )
+        return self.nextVal
+    
+    # get previous value
+    def getPrevious(self):
+        return self.prevVal
+    
+    # see if its the end
+    def isEnd(self):
+        if self.nextVal == self.endVal:
+            return True
+        return False
+
+
+
+
+
+
+
+todo:
+
+HTTPS requests
+
+Code
+
+pip install requests
+2. Making a GET Request:
+To make a basic GET request to retrieve data from an HTTPS endpoint:
+Python
+
+import requests
+
+url = "https://api.example.com/data"  # Replace with your desired URL
+response = requests.get(url)
+
+# Check the status code
+if response.status_code == 200:
+    print("Request successful!")
+    print("Response content:")
+    print(response.text)  # For text/HTML content
+    # For JSON content:
+    # print(response.json())
+else:
+    print(f"Request failed with status code: {response.status_code}")
+3. Making a POST Request:
+To send data to an HTTPS endpoint, typically using a POST request:
+Python
+
+import requests
+
+url = "https://api.example.com/submit"  # Replace with your desired URL
+data = {"key1": "value1", "key2": "value2"}  # Data to send as a dictionary
+
+response = requests.post(url, json=data)  # Use json= for sending JSON data
+
+if response.status_code == 200:
+    print("Data submitted successfully!")
+    print(response.text)
+else:
+    print(f"Submission failed with status code: {response.status_code}")
+Key Considerations:
+SSL Certificate Verification:
+By default, requests verifies SSL certificates to ensure secure communication. It is highly recommended to keep this enabled in production environments (verify=True).
+Error Handling:
+Implement robust error handling to manage potential issues like network errors or invalid responses.
+Other Request Types:
+The requests library also supports other HTTP methods like put(), delete(), head(), etc.
+Headers and Parameters:
+You can add custom headers and URL parameters to your requests using the headers and params arguments, respectively.
+
+
+
+
+
+
+
+
+# -*- coding: utf-8 -*-
+# the __all__ is generated
+__all__ = []
+
+# __init__.py structure:
+# common code of the package
+# export interface in __all__ which contains __all__ of its sub modules
+
+# import all from submodule stock_actor
+from .stock_actor import *
+from .stock_actor import __all__ as _stock_actor_all
+
+__all__ += _stock_actor_all
+
+# import all from submodule actor_meta
+from .actor_meta import *
+from .actor_meta import __all__ as _actor_meta_all
+
+__all__ += _actor_meta_all
+
+
+
+
+tradable_type_map_exchanges = {
+    TradableType.block: [Exchange.cn],
+    TradableType.index: [Exchange.sh, Exchange.sz],
+    TradableType.stock: [Exchange.sh, Exchange.sz, Exchange.bj],
+    TradableType.stockhk: [Exchange.hk],
+    TradableType.stockus: [Exchange.nasdaq, Exchange.nyse],
+    TradableType.indexus: [Exchange.us],
+    TradableType.future: [Exchange.shfe, Exchange.dce, Exchange.czce, Exchange.cffex, Exchange.ine],
+    TradableType.coin: [Exchange.binance, Exchange.huobipro],
+    TradableType.currency: [Exchange.forex],
+}
+
+
+
+
+
+
+# non-randomized hash function
+hash = lambda s: int(hashlib.sha512(s.encode('utf-8')).hexdigest()[:16], 16)
+
+
+def isclose(a, b, rel_tol=1e-06, abs_tol=0.0):
+    if np.isnan(a) == np.isnan(b):
+        return True
+    if np.isinf(a) == np.isinf(b):
+        return True
+    if a == b:
+        return True
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
+
+ # todo: self._allStockPricesTask    = AllStockPricesTask( self, self._allStocks )
+
+
+''' todo: move
+    
+    # parse daily mover winner or losers HTML
+    def ParseDailyMoverHTML(self, trow ):
+        
+        trow, index                                 = HtmlParser.parseTableData( trow )
+        
+        trow, self.dataFlds[ EDataField.eSymbol ]       = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eCompany ]      = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eChange ]       = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.ePrice ]        = HtmlParser.parseTableData( trow )
+         trow, self.dataFlds[ EDataField.eVolume ]       = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eMarketCap ]    = HtmlParser.parseTableData( trow )
+        
+        return index
+    
+
+    # parse all stocks HTML
+    def parseAllStocksHTML( self, trow ):
+        
+        trow, self.dataFlds[ EDataField.eSymbol ]       = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eCompany ]      = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eIndustry ]     = HtmlParser.parseTableData( trow )
+        trow, self.dataFlds[ EDataField.eMarketCap ]    = HtmlParser.parseTableData( trow )
+ 
+        
+        
+        
+           #
+        # todo:
+        
+    # break the file data down into stock records delimited by timestamps '<*>timestamp<*>stocks records<*>timestamp<*>....'
+    #
+    @staticmethod
+    def __parseTimestampDelimitedRecords__( fdata ):
+        
+        stockRecs = Dictionary()
+        while( len( fdata ) > 0 ):
+                
+            pos = fdata.find( "<*>" )
+            if pos == -1:
+                return stockRecs
+            else:
+           
+                fdata, substr       = Utils.parseSubStr( fdata, "<*>" )   # substr is blank here
+                fdata, substr       = Utils.parseSubStr( fdata, "<*>" )   # substr holds the timestamp
+                stockRecs[ substr ] = Dictionary()
+                fdata, stockEntries = Utils.parseSubStr( fdata, "<*>" )   # go to next timestamp head delimter
+                fdata               = ("<*>" + fdata) # put leading timestamp delimiter back at the head
+                
+                # parse all the records from the file entry
+                while( len( stockEntries ) > 0 ):
+                    
+                    stockEntries, stock = StockDataFiles.parseFileEntry( stockEntries )
+                    
+                    stockRecs[ substr ][ stock.dataFlds[ EDataField.eSymbol ] ] = stock
+                                    
+        return stockRecs
+        
+
+    '''
+
+
+
+
+
+#       
+# ReusableOneShotTimer - a reusable one shot timer
+#
+class ReusableOneShotTimer( BaseTimer ):
+    
+    def __init__( self, slotFunc, timeout, startTimer ):
+        
+        Timer.__init__( self, slotFunc, timeout, timeout )
+        self.setSingleShot(True)
+        if startTimer:
+            self.start()
+
+
+                    '''
+ 
+#            
+# NamedRepeatingTimer - a repeating timer
+#
+class NamedRepeatingTimer( Timer ):
+    
+    def __init__( self, slotFunc, taskName, initTimeout, nextTimeout ):
+        
+        self.userObj  = user    
+        self.slotFunc = slotFunc
+        self.taskName = taskName
+        Timer.__init__(self, self.timerCallback, initTimeout, nextTimeout )
+        self.start()
+
+    def __init__( self, user, slotFunc, taskName, initTimeout, nextTimeout ):
+        
+        self.userObj  = user    
+        self.slotFunc = slotFunc
+        self.taskName = taskName
+        Timer.__init__(self, self.timerCallback, initTimeout, nextTimeout )
+        self.start()
+                
+    def timerCallback(self):
+        
+        self.slotFunc( self.taskName ) # we do the callback
+        #self.userObj.slotFunc( self.taskName ) # we do the callback      
+             
+
+        '''
+
+        '''
+    def Timer.restartDueToError( self, errCnt ): #, taskName ):
+        
+        if self.isActive():
+            self.stop()
+        
+        errCnt += 1
+        if errCnt >= 4:
+            assret( False )
+            self.start( self.nextTimeout * Timer.TO_MSECS * 10 ) # convert from secs to msecs x 10 since it keeps excepting
+            theApp.getLogger().logErr( "Task: {} has had {} exceptions since Start Up".format( taskName, errCnt ))
+        else:
+            self.start( self._initTimeout * Timer.TO_MSECS ) # convert from secs to msecs
+        '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        '''
+        self._summaries = StockDataFiles.readStockSummaries()
+        
+        self._task[ "LoggerTask" ]          = TaskManager.TaskTimerPair( LoggerTask(), RepeatingTimer( self, self.startTaskSlot, "LoggerTask", 5, 5 ) )
+        self._tasks[ "AllStocksTask" ]      = TaskManager.TaskTimerPair( AllStocksTask( self._allStocks ), RepeatingTimer( self, self.startTaskSlot, "AllStocksTask", 15, 120 ) )
+
+        self._tasks[ "DailyLosersTask" ]    = TaskManager.TaskTimerPair( DailyLosersTask(), RepeatingTimer( self, self.startTaskSlot, "DailyLosersTask", 10, 30 ) )
+        self._tasks[ "DailyWinnersTask" ]   = TaskManager.TaskTimerPair( DailyWinnersTask(), RepeatingTimer( self, self.startTaskSlot, "DailyWinnersTask", 10, 30 ) )
+
+        
+        #self._tasks[ "RssFeedsTask" ] = TaskAndTimer( RssFeedsTask(), RepeatingTimer( self, self.startTaskSlot, "RssFeedsTask", 7, 30 ) )
+        #self._tasks[ "AllStocksTask" ] = TaskAndTimer( AllStocksTask( self._savedAllStocks ), RepeatingTimer( self, self.startTaskSlot, "AllStocksTask", 15, 120 ) )
+        #self._tasks[ "SummariesTask" ] = TaskAndTimer( SummariesTask( self._stockSummaries ), RepeatingTimer( self, self.startTaskSlot, "SummariesTask", 20, 60 ) )
+        
+
+        #self._tasks.append( NewsFeedsTask() )
+        #self._tasks.append( MonitoringTask() )
+        #self._taskTimers[ ].append( RepeatingTimer( self, self.newsTaskSlot, 7, 30 ) )   # 2
+        #self._taskTimers.append( RepeatingTimer( self, self.monitoringTaskSlot, 10, 15 ) )  # 7
+        #self._timers[ Threads.NEWS_FEEDS_THREAD ] = RepeatingTimer( self, self.readNewsFeeds_Slot, (1000 * 60 * 30) ) # 30 minute timeout for News Feeds
+        #self._timers[ Threads.STOCK_QUOTE_THREAD ] = RepeatingTimer( self, self.readStockPrices_Slot, (1000 * 60 * 5) ) # 5 minute timeout for logging msgs
+        #self._timers[ Threads.BAL_SHEET_THREAD ] = RepeatingTimer( self, self.readBalanceSheets_Slot, (1000 * 60 * 480) ) # 10 minute timeout for logging msgs
+        #self._timers[ Threads.EPS_SHEET_THREAD ] = RepeatingTimer( self, self.readEpsSheet_Slot, (1000 * 60 * 540) ) # 10 minute timeout for logging msgs
+        
+    
+    # get all stocks
+    def getAllStocks(self):
+        return self._savedAllStocks
+    
+    # set all stocks
+    def saveAllStocks(self, allStocks):
+        self._savedAllStocks.clear()
+        self._savedAllStocks.copy( allStocks )
+        self._fileInterface.writeAllStocksFile( self._savedAllStocks )
+        self._lastAllUpdate = datetime.datetime.now()
+    
+    # save stock summaries
+    def saveStockSummaries( self, summaries ):
+        self._stockSummaries.clear()
+        self._stockSummaries.copy( summaries )
+        Stock.writeStockSummaries( self._savedAllStocks )
+        self._lastSummaryUpdate = datetime.datetime.now()
+
+    def waitForExit():
+        QThreadPool.waitForDone()
+        
+    # does not use a timer is called as needed by other tasks
+    def writeCSVFile( self, csvFileType, headers, entries ):
+        self.__startTask__( CSVWriterTask( csvFileType, headers, entries ) )
+    
+
+
+
+    # log all tasks runtime statistics
+    def logRuntimeStatistics( self, task, runtimeSecs ):
+        
+         todo:
+            self._runtimeEntries = []
+    
+    # log our runtime for tuning
+    def __logRuntime__( self ):
+        
+        secs = int( (datetime.now() - self._startTime).seconds )
+        theApp.getLogger().logInfo( "TASK: {} had {} Entries and Ran for {} seconds or {} To process an Entry.".format( self._taskName, self._numEntries, secs, (secs / int(self._numEntries)) ) )
+        
+        fileName = ".\\Database\\TaskStatistics_{}.dat".format( Utils.getYear() )
+        fileData = "{}:{},".format( self._taskName, secs )
+        
+        fileLock = FileLock( fileName )
+        if fileLock.lock():
+            for entry in self._runtimeEntries:
+                StaticFileOps.append( fileName, entry )
+            StaticFileOps.write( fileName, fileData )
+            fileLock.unlock()
+        else:
+            self._runtimeEntries.append( fileData )    
+            
+    '''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #QApplication app(argc, argv);
+#Q3DScatter *graph = new Q3DScatter();
+#QWidget *container = QWidget::createWindowContainer(graph);
+#The call to QWidget::createWindowContainer is required, as all data visualization graph classes (Q3DBars, Q3DScatter, and Q3DSurface) inherit QWindow. Any class inheriting QWindow cannot be used as a widget any other way.
+#Then we'll create horizontal and vertical layouts. We'll add the graph and the vertical layout into the horizontal one:
+#QWidget *widget = new QWidget;
+#QHBoxLayout *hLayout = new QHBoxLayout(widget);
+#QVBoxLayout *vLayout = new QVBoxLayout();
+#hLayout->addWidget(container, 1);
+#hLayout->addLayout(vLayout);
+#We're not using the vertical layout for anything yet, but we'll get back to it in Using widgets to control the graph
+#Next, let's create another class to handle the data addition and other interaction with the graph. Let's call it ScatterDataModifier (See Setting up the graph and Adding data to the graph for details):
+#ScatterDataModifier *modifier = new ScatterDataModifier(graph);
+#The application main is done. We can show the graph and start the event loop:
+#widget->show();
+#return app.exec();
+Setting up the Graph
+Let's set up some visual qualities for the graph in the constructor of the ScatterDataModifier class we instantiated in the application main:
+
+m_graph->activeTheme()->setType(Q3DTheme::ThemeEbony);
+QFont font = m_graph->activeTheme()->font();
+font.setPointSize(m_fontSize);
+m_graph->activeTheme()->setFont(font);
+m_graph->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
+m_graph->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetFront);
+None of these are required, but are used to override graph defaults. You can try how it looks with the preset defaults by commenting the block above out.
+
+Finally we create a QScatterDataProxy and the associated QScatter3DSeries. We set custom label format and mesh smoothing for the series and add it to the graph:
+
+QScatterDataProxy *proxy = new QScatterDataProxy;
+QScatter3DSeries *series = new QScatter3DSeries(proxy);
+series->setItemLabelFormat(QStringLiteral("@xTitle: @xLabel @yTitle: @yLabel @zTitle: @zLabel"));
+series->setMeshSmooth(m_smooth);
+m_graph->addSeries(series);
+That concludes setting up the graph.
+
+Adding Data to the Graph
+The last thing we do in the ScatterDataModifier constructor is to add data to the graph:
+
+addData();
+The actual data addition is done in addData() method. First we configure the axes:
+
+m_graph->axisX()->setTitle("X");
+m_graph->axisY()->setTitle("Y");
+m_graph->axisZ()->setTitle("Z");
+This could have been done in the constructor of ScatterDataModifier, but we added it here to keep the constructor simpler and the axes configuration near the data.
+
+Next we create a data array:
+
+QScatterDataArray *dataArray = new QScatterDataArray;
+dataArray->resize(m_itemCount);
+QScatterDataItem *ptrToDataArray = &dataArray->first();
+and populate it:
+
+float limit = qSqrt(m_itemCount) / 2.0f;
+for (float i = -limit; i < limit; i++) {
+    for (float j = -limit; j < limit; j++) {
+        ptrToDataArray->setPosition(QVector3D(i + 0.5f,
+                                              qCos(qDegreesToRadians((i * j) / m_curveDivider)),
+                                              j + 0.5f));
+        ptrToDataArray++;
+    }
+}
+Finally we tell the proxy to start using the data we gave it:
+
+m_graph->seriesList().at(0)->dataProxy()->resetArray(dataArray);
+Now our graph has the data and is ready to be used. There isn't much interaction yet, though, so let's continue by adding some widgets to play with.
+
+Using Widgets to Control the Graph
+First, back in the application main, we'll create some widgets:
+
+QComboBox *themeList = new QComboBox(widget);
+themeList->addItem(QStringLiteral("Qt"));
+themeList->addItem(QStringLiteral("Primary Colors"));
+themeList->addItem(QStringLiteral("Digia"));
+themeList->addItem(QStringLiteral("Stone Moss"));
+themeList->addItem(QStringLiteral("Army Blue"));
+themeList->addItem(QStringLiteral("Retro"));
+themeList->addItem(QStringLiteral("Ebony"));
+themeList->addItem(QStringLiteral("Isabelle"));
+themeList->setCurrentIndex(6);
+
+QPushButton *labelButton = new QPushButton(widget);
+labelButton->setText(QStringLiteral("Change label style"));
+
+QCheckBox *smoothCheckBox = new QCheckBox(widget);
+smoothCheckBox->setText(QStringLiteral("Smooth dots"));
+smoothCheckBox->setChecked(true);
+
+QComboBox *itemStyleList = new QComboBox(widget);
+itemStyleList->addItem(QStringLiteral("Sphere"), int(QAbstract3DSeries::MeshSphere));
+itemStyleList->addItem(QStringLiteral("Cube"), int(QAbstract3DSeries::MeshCube));
+itemStyleList->addItem(QStringLiteral("Minimal"), int(QAbstract3DSeries::MeshMinimal));
+itemStyleList->addItem(QStringLiteral("Point"), int(QAbstract3DSeries::MeshPoint));
+itemStyleList->setCurrentIndex(0);
+
+QPushButton *cameraButton = new QPushButton(widget);
+cameraButton->setText(QStringLiteral("Change camera preset"));
+
+QPushButton *itemCountButton = new QPushButton(widget);
+itemCountButton->setText(QStringLiteral("Toggle item count"));
+
+QCheckBox *backgroundCheckBox = new QCheckBox(widget);
+backgroundCheckBox->setText(QStringLiteral("Show background"));
+backgroundCheckBox->setChecked(true);
+
+QCheckBox *gridCheckBox = new QCheckBox(widget);
+gridCheckBox->setText(QStringLiteral("Show grid"));
+gridCheckBox->setChecked(true);
+
+QComboBox *shadowQuality = new QComboBox(widget);
+shadowQuality->addItem(QStringLiteral("None"));
+shadowQuality->addItem(QStringLiteral("Low"));
+shadowQuality->addItem(QStringLiteral("Medium"));
+shadowQuality->addItem(QStringLiteral("High"));
+shadowQuality->addItem(QStringLiteral("Low Soft"));
+shadowQuality->addItem(QStringLiteral("Medium Soft"));
+shadowQuality->addItem(QStringLiteral("High Soft"));
+shadowQuality->setCurrentIndex(4);
+
+QFontComboBox *fontList = new QFontComboBox(widget);
+fontList->setCurrentFont(QFont("Arial"));
+And add them to the vertical layout we created earlier:
+
+vLayout->addWidget(labelButton, 0, Qt::AlignTop);
+vLayout->addWidget(cameraButton, 0, Qt::AlignTop);
+vLayout->addWidget(itemCountButton, 0, Qt::AlignTop);
+vLayout->addWidget(backgroundCheckBox);
+vLayout->addWidget(gridCheckBox);
+vLayout->addWidget(smoothCheckBox, 0, Qt::AlignTop);
+vLayout->addWidget(new QLabel(QStringLiteral("Change dot style")));
+vLayout->addWidget(itemStyleList);
+vLayout->addWidget(new QLabel(QStringLiteral("Change theme")));
+vLayout->addWidget(themeList);
+vLayout->addWidget(new QLabel(QStringLiteral("Adjust shadow quality")));
+vLayout->addWidget(shadowQuality);
+vLayout->addWidget(new QLabel(QStringLiteral("Change font")));
+vLayout->addWidget(fontList, 1, Qt::AlignTop);
+Now, let's connect them to methods in ScatterDataModifier:
+
+QObject::connect(cameraButton, &QPushButton::clicked, modifier,
+                 &ScatterDataModifier::changePresetCamera);
+QObject::connect(labelButton, &QPushButton::clicked, modifier,
+                 &ScatterDataModifier::changeLabelStyle);
+QObject::connect(itemCountButton, &QPushButton::clicked, modifier,
+                 &ScatterDataModifier::toggleItemCount);
+
+QObject::connect(backgroundCheckBox, &QCheckBox::stateChanged, modifier,
+                 &ScatterDataModifier::setBackgroundEnabled);
+QObject::connect(gridCheckBox, &QCheckBox::stateChanged, modifier,
+                 &ScatterDataModifier::setGridEnabled);
+QObject::connect(smoothCheckBox, &QCheckBox::stateChanged, modifier,
+                 &ScatterDataModifier::setSmoothDots);
+
+QObject::connect(modifier, &ScatterDataModifier::backgroundEnabledChanged,
+                 backgroundCheckBox, &QCheckBox::setChecked);
+QObject::connect(modifier, &ScatterDataModifier::gridEnabledChanged,
+                 gridCheckBox, &QCheckBox::setChecked);
+QObject::connect(itemStyleList, SIGNAL(currentIndexChanged(int)), modifier,
+                 SLOT(changeStyle(int)));
+
+QObject::connect(themeList, SIGNAL(currentIndexChanged(int)), modifier,
+                 SLOT(changeTheme(int)));
+
+QObject::connect(shadowQuality, SIGNAL(currentIndexChanged(int)), modifier,
+                 SLOT(changeShadowQuality(int)));
+
+QObject::connect(modifier, &ScatterDataModifier::shadowQualityChanged, shadowQuality,
+                 &QComboBox::setCurrentIndex);
+QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
+                 &ScatterDataModifier::shadowQualityUpdatedByVisual);
+
+QObject::connect(fontList, &QFontComboBox::currentFontChanged, modifier,
+                 &ScatterDataModifier::changeFont);
+
+QObject::connect(modifier, &ScatterDataModifier::fontChanged, fontList,
+                 &QFontComboBox::setCurrentFont);
+Here are the methods in ScatterDataModifier the signals were connected to:
+
+void ScatterDataModifier::changeStyle(int style)
+{
+    QComboBox *comboBox = qobject_cast<QComboBox *>(sender());
+    if (comboBox) {
+        m_style = QAbstract3DSeries::Mesh(comboBox->itemData(style).toInt());
+        if (m_graph->seriesList().size())
+            m_graph->seriesList().at(0)->setMesh(m_style);
+    }
+}
+
+void ScatterDataModifier::setSmoothDots(int smooth)
+{
+    m_smooth = bool(smooth);
+    QScatter3DSeries *series = m_graph->seriesList().at(0);
+    series->setMeshSmooth(m_smooth);
+}
+
+void ScatterDataModifier::changeTheme(int theme)
+{
+    Q3DTheme *currentTheme = m_graph->activeTheme();
+    currentTheme->setType(Q3DTheme::Theme(theme));
+    emit backgroundEnabledChanged(currentTheme->isBackgroundEnabled());
+    emit gridEnabledChanged(currentTheme->isGridEnabled());
+    emit fontChanged(currentTheme->font());
+}
+
+void ScatterDataModifier::changePresetCamera()
+{
+    static int preset = Q3DCamera::CameraPresetFrontLow;
+
+    m_graph->scene()->activeCamera()->setCameraPreset((Q3DCamera::CameraPreset)preset);
+
+    if (++preset > Q3DCamera::CameraPresetDirectlyBelow)
+        preset = Q3DCamera::CameraPresetFrontLow;
+}
+
+void ScatterDataModifier::changeLabelStyle()
+{
+    m_graph->activeTheme()->setLabelBackgroundEnabled(!m_graph->activeTheme()->isLabelBackgroundEnabled());
+}
+
+void ScatterDataModifier::changeFont(const QFont &font)
+{
+    QFont newFont = font;
+    newFont.setPointSizeF(m_fontSize);
+    m_graph->activeTheme()->setFont(newFont);
+}
+
+void ScatterDataModifier::shadowQualityUpdatedByVisual(QAbstract3DGraph::ShadowQuality sq)
+{
+    int quality = int(sq);
+    emit shadowQualityChanged(quality); // connected to a checkbox in main.cpp
+}
+
+void ScatterDataModifier::changeShadowQuality(int quality)
+{
+    QAbstract3DGraph::ShadowQuality sq = QAbstract3DGraph::ShadowQuality(quality);
+    m_graph->setShadowQuality(sq);
+}
+
+void ScatterDataModifier::setBackgroundEnabled(int enabled)
+{
+    m_graph->activeTheme()->setBackgroundEnabled((bool)enabled);
+}
+
+void ScatterDataModifier::setGridEnabled(int enabled)
+{
+    m_graph->activeTheme()->setGridEnabled((bool)enabled);
+}
+And so we have an application in which we can control:
+
+Label style
+Camera preset
+Background visibility
+Grid visibility
+Dot shading smoothness
+Dot style
+Theme
+Shadow quality
+Label font
+
+
+
+
+
+
+
+
+
+
+
+
+    '''
+    Triangulation
+A Triangulation of a polygon is to divide the polygon into multiple triangles with which we can compute an area of the polygon.
+
+A Triangulation with points means creating surface composed triangles in which all of the given points are on at least one vertex of any triangle in the surface.
+
+One method to generate these triangulations through points is the Delaunay() Triangulation.
+
+ExampleGet your own Python Server
+Create a triangulation from following points:
+
+import numpy as np
+from scipy.spatial import Delaunay
+import matplotlib.pyplot as plt
+
+points = np.array([
+  [2, 4],
+  [3, 4],
+  [3, 0],
+  [2, 2],
+  [4, 1]
+])
+
+simplices = Delaunay(points).simplices
+
+plt.triplot(points[:, 0], points[:, 1], simplices)
+plt.scatter(points[:, 0], points[:, 1], color='r')
+
+plt.show()
+Result:
+
+
+Note: The simplices property creates a generalization of the triangle notation.
+
+ADVERTISEMENT
+
+ADVERTISEMENT
+
+ADVERTISEMENT
+
+Convex Hull
+A convex hull is the smallest polygon that covers all of the given points.
+
+Use the ConvexHull() method to create a Convex Hull.
+
+Example
+Create a convex hull for following points:
+
+import numpy as np
+from scipy.spatial import ConvexHull
+import matplotlib.pyplot as plt
+
+points = np.array([
+  [2, 4],
+  [3, 4],
+  [3, 0],
+  [2, 2],
+  [4, 1],
+  [1, 2],
+  [5, 0],
+  [3, 1],
+  [1, 2],
+  [0, 2]
+])
+
+hull = ConvexHull(points)
+hull_points = hull.simplices
+
+plt.scatter(points[:,0], points[:,1])
+for simplex in hull_points:
+  plt.plot(points[simplex,0], points[simplex,1], 'k-')
+
+plt.show()
+Result:
+
+
+KDTrees
+KDTrees are a datastructure optimized for nearest neighbor queries.
+
+E.g. in a set of points using KDTrees we can efficiently ask which points are nearest to a certain given point.
+
+The KDTree() method returns a KDTree object.
+
+The query() method returns the distance to the nearest neighbor and the location of the neighbors.
+
+Example
+Find the nearest neighbor to point (1,1):
+
+from scipy.spatial import KDTree
+
+points = [(1, -1), (2, 3), (-2, 3), (2, -3)]
+
+kdtree = KDTree(points)
+
+res = kdtree.query((1, 1))
+
+print(res)
+Result:
+
+ (2.0, 0)
+
+Distance Matrix
+There are many Distance Metrics used to find various types of distances between two points in data science, Euclidean distsance, cosine distsance etc.
+
+The distance between two vectors may not only be the length of straight line between them, it can also be the angle between them from origin, or number of unit steps required etc.
+
+Many of the Machine Learning algorithm's performance depends greatly on distance metrices. E.g. "K Nearest Neighbors", or "K Means" etc.
+
+Let us look at some of the Distance Metrices:
+
+Euclidean Distance
+Find the euclidean distance between given points.
+
+Example
+from scipy.spatial.distance import euclidean
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = euclidean(p1, p2)
+
+print(res)
+Result:
+
+ 9.21954445729
+
+Cityblock Distance (Manhattan Distance)
+Is the distance computed using 4 degrees of movement.
+
+E.g. we can only move: up, down, right, or left, not diagonally.
+
+Example
+Find the cityblock distance between given points:
+
+from scipy.spatial.distance import cityblock
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = cityblock(p1, p2)
+
+print(res)
+Result:
+
+ 11
+
+Cosine Distance
+Is the value of cosine angle between the two points A and B.
+
+Example
+Find the cosine distsance between given points:
+
+from scipy.spatial.distance import cosine
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = cosine(p1, p2)
+
+print(res)
+Result:
+
+ 0.019419324309079777
+
+Hamming Distance
+Is the proportion of bits where two bits are different.
+
+It's a way to measure distance for binary sequences.
+
+Example
+Find the hamming distance between given points:
+
+from scipy.spatial.distance import hamming
+
+p1 = (True, False, True)
+p2 = (False, True, True)
+
+res = hamming(p1, p2)
+
+print(res)
+Result:
+
+ 0.666666666667
+
+Test Yourself With Exercises
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   '''
+
+# Get Data
+finviz_url = 'https://finviz.com/quote.ashx?t='
+news_tables = {}
+
+for ticker in tickers:
+    url = finviz_url + ticker
+    req = Request(url=url,headers={'user-agent': 'my-app/0.0.1'}) 
+    resp = urlopen(req)    
+    html = BeautifulSoup(resp, features="lxml")
+    news_table = html.find(id='news-table')
+    news_tables[ticker] = news_table
+
+try:
+    for ticker in tickers:
+        df = news_tables[ticker]
+        df_tr = df.findAll('tr')
+    
+        print ('\n')
+        print ('Recent News Headlines for {}: '.format(ticker))
+        
+        for i, table_row in enumerate(df_tr):
+            a_text = table_row.a.text
+            td_text = table_row.td.text
+            td_text = td_text.strip()
+            print(a_text,'(',td_text,')')
+            if i == n-1:
+                break
+except KeyError:
+    pass
+    
+    # View Data 
+news['Date'] = pd.to_datetime(news.Date).dt.date
+
+unique_ticker = news['Ticker'].unique().tolist()
+news_dict = {name: news.loc[news['Ticker'] == name] for name in unique_ticker}
+
+values = []
+for ticker in tickers: 
+    dataframe = news_dict[ticker]
+    dataframe = dataframe.set_index('Ticker')
+    dataframe = dataframe.drop(columns = ['Headline'])
+    print ('\n')
+    print (dataframe.head())
+    
+    mean = round(dataframe['compound'].mean(), 2)
+    values.append(mean)
+    
+df = pd.DataFrame(list(zip(tickers, values)), columns =['Ticker', 'Mean Sentiment']) 
+df = df.set_index('Ticker')
+df = df.sort_values('Mean Sentiment', ascending=False)
+print ('\n')
+
+
+
+
+
+
+
+# Import libraries
+import pandas as pd
+from bs4 import BeautifulSoup
+import matplotlib.pyplot as plt
+from urllib.request import urlopen, Request
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+# Parameters 
+n = 3 #the # of article headlines displayed per ticker
+tickers = ['AAPL', 'TSLA', 'AMZN']
+
+# Get Data
+finwiz_url = 'https://finviz.com/quote.ashx?t='
+news_tables = {}
+
+for ticker in tickers:
+    url = finwiz_url + ticker
+    req = Request(url=url,headers={'user-agent': 'my-app/0.0.1'}) 
+    resp = urlopen(req)    
+    html = BeautifulSoup(resp, features="lxml")
+    news_table = html.find(id='news-table')
+    news_tables[ticker] = news_table
+
+try:
+    for ticker in tickers:
+        df = news_tables[ticker]
+        df_tr = df.findAll('tr')
+    
+        print ('\n')
+        print ('Recent News Headlines for {}: '.format(ticker))
+        
+        for i, table_row in enumerate(df_tr):
+            a_text = table_row.a.text
+            td_text = table_row.td.text
+            td_text = td_text.strip()
+            print(a_text,'(',td_text,')')
+            if i == n-1:
+                break
+except KeyError:
+    pass
+    
+    
+    
+    
+    SAME AS ABOVE
+
+# Iterate through the news
+parsed_news = []
+for file_name, news_table in news_tables.items():
+    for x in news_table.findAll('tr'):
+        text = x.a.get_text() 
+        date_scrape = x.td.text.split()
+
+        if len(date_scrape) == 1:
+            time = date_scrape[0]
+            
+        else:
+            date = date_scrape[0]
+            time = date_scrape[1]
+
+        ticker = file_name.split('_')[0]
+        
+        parsed_news.append([ticker, date, time, text])
+        
+# Sentiment Analysis
+analyzer = SentimentIntensityAnalyzer()
+
+columns = ['Ticker', 'Date', 'Time', 'Headline']
+news = pd.DataFrame(parsed_news, columns=columns)
+scores = news['Headline'].apply(analyzer.polarity_scores).tolist()
+
+df_scores = pd.DataFrame(scores)
+news = news.join(df_scores, rsuffix='_right')
+
+
+# View Data 
+news['Date'] = pd.to_datetime(news.Date).dt.date
+
+unique_ticker = news['Ticker'].unique().tolist()
+news_dict = {name: news.loc[news['Ticker'] == name] for name in unique_ticker}
+
+values = []
+for ticker in tickers: 
+    dataframe = news_dict[ticker]
+    dataframe = dataframe.set_index('Ticker')
+    dataframe = dataframe.drop(columns = ['Headline'])
+    print ('\n')
+    print (dataframe.head())
+    
+    mean = round(dataframe['compound'].mean(), 2)
+    values.append(mean)
+    
+df = pd.DataFrame(list(zip(tickers, values)), columns =['Ticker', 'Mean Sentiment']) 
+df = df.set_index('Ticker')
+df = df.sort_values('Mean Sentiment', ascending=False)
+print ('\n')
+print (df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            
+    Extracting the Data
+We are going to use the Stock Market and Financial News API by accessing the Python library provided by EODHD as follows:
+
+
+resp = api.financial_news(s = "AAPL.US", from_date = '2024-01-01', to_date = '2024-01-30', limit = 100)
+df = pd.DataFrame(resp) # converting the json output into datframe
+df.tail()
+
+    
+
+
+
+
+# Read one single day of headlines 
+tsla = html_tables['tsla_22sep.html']
+
+# Get all the table rows tagged in HTML with <tr> into 'tesla_tr'
+tsla_tr = tsla.findAll ('tr')
+
+print (type (tsla_tr))
+
+print (tsla_tr [0])
+<class 'bs4.element.ResultSet'>
+<tr><td align="right" style="white-space:nowrap" width="130">Sep-21-18 09:56PM  </td><td align="left"><a class="tab-link-news" href="https://finance.yahoo.com/video/billionaire-investor-questions-elon-musk-015608758.html" target="_blank">Billionaire investor questions Elon Musk getting 'a pass' after bombshell tweets</a> <span style="color:#aa6dc0;font-size:9px">Fox Business Videos</span></td></tr>
+# For each row...
+for i, table_row in enumerate(tsla_tr):
+    # Read the text of the element 'a' into 'link_text'
+    link_text = table_row.a.get_text()
+    # Read the text of the element 'td' into 'data_text'
+    data_text = table_row.td.get_text()
+    # Print the count
+    print(f'File number {i+1}:')
+    # Print the contents of 'link_text' and 'data_text' 
+    print(link_text)
+    print(data_text)
+    # The following exits the loop after four rows to prevent spamming the notebook, do not touch
+    if i == 3:
+        break
+File number 1:
+Billionaire investor questions Elon Musk getting 'a pass' after bombshell tweets
+Sep-21-18 09:56PM  
+File number 2:
+Broadcoms Stock Looks Like a Winner
+09:30PM  
+File number 3:
+SHAREHOLDER ALERT:  Pomerantz Law Firm Reminds Shareholders with Losses on their Investment in Tesla, Inc. of Class Action Lawsuit and Upcoming Deadline  TSLA
+05:30PM  
+File number 4:
+Tesla's People Problem and the Inscrutable Musk: 2 Things That Make You Go Hmmm
+05:30PM  
+3. Extra, extra! Extract the news headlines
+As we saw above, the interesting data inside each table row (<tr>) is in the text inside the <td> and <a> tags. Let's now actually parse the data for all tables in a comfortable data structure.
+
+# Hold the parsed news into a list
+parsed_news = []
+# Iterate through the news
+for file_name, news_table in html_tables.items():
+    # Iterate through all tr tags in 'news_table'
+    for x in news_table.findAll('tr'):
+        # Read the text from the tr tag into text
+        text = x.get_text() 
+        # Split the text in the td tag into a list 
+        date_scrape = x.td.text.split()
+        # If the length of 'date_scrape' is 1, load 'time' with the only element
+        # If not, load 'date' with the 1st element and 'time' with the second
+        if len(date_scrape) == 1:
+            time = date_scrape[0]
+        else:
+            date = date_scrape[0]
+            time = date_scrape[1]
+
+        # Extract the ticker from the file name, get the string up to the 1st '_'  
+        ticker = file_name.split("_")[0]
+        # Append ticker, date, time and headline as a list to the 'parsed_news' list
+        parsed_news.append([ticker, date, time, x.a.text])
+parsed_news [0]
+['tsla',
+ 'Nov-26-18',
+ '01:25PM',
+ 'Tesla was weeks from dying earlier this year, Elon Musk says']
+4. Make NLTK think like a financial journalist
+Sentiment analysis is very sensitive to context. As an example, saying "This is so addictive!" often means something positive if the context is a video game you are enjoying with your friends, but it very often means something negative when we are talking about opioids. Remember that the reason we chose headlines is so we can try to extract sentiment from financial journalists, who like most professionals, have their own lingo. Let's now make NLTK think like a financial journalist by adding some new words and sentiment values to our lexicon.
+
+# NLTK VADER for sentiment analysis
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+# New words and values
+new_words = {
+    'crushes': 10,
+    'beats': 5,
+    'misses': -5,
+    'trouble': -10,
+    'falls': -100,
+}
+# Instantiate the sentiment intensity analyzer with the existing lexicon
+vader = SentimentIntensityAnalyzer ()
+# Update the lexicon
+vader.lexicon.update (new_words)
+/opt/conda/lib/python3.7/site-packages/nltk/twitter/__init__.py:20: UserWarning: The twython library has not been installed. Some functionality from the twitter package will not be available.
+  warnings.warn("The twython library has not been installed. "
+5. BREAKING NEWS: NLTK Crushes Sentiment Estimates
+Now that we have the data and the algorithm loaded, we will get to the core of the matter: programmatically predicting sentiment out of news headlines! Luckily for us, VADER is very high level so, in this case, we will not adjust the model further* other than the lexicon additions from before.
+
+*VADER "out-of-the-box" with some extra lexicon would likely translate into heavy losses with real money. A real sentiment analysis tool with chances of being profitable will require a very extensive and dedicated to finance news lexicon. Furthermore, it might also not be enough using a pre-packaged model like VADER.
+
+import pandas as pd
+# Use these column names
+columns = ['ticker', 'date', 'time', 'headline']
+# Convert the list of lists into a DataFrame
+scored_news = pd.DataFrame (parsed_news, columns = columns)
+scored_news.head ()
+ticker	date	time	headline
+0	tsla	Nov-26-18	01:25PM	Tesla was weeks from dying earlier this year, ...
+1	tsla	Nov-26-18	01:08PM	Elon Musk Says Tesla Was 'Close to Death' Duri...
+2	tsla	Nov-26-18	01:07PM	Tesla Almost Died Earlier This Year, Says Elon...
+3	tsla	Nov-26-18	01:00PM	Elon Musk Said Tesla Almost Died and the Stoc...
+4	tsla	Nov-26-18	12:36PM	Elon Musk Admits Tesla Was Near Death This Year
+# Iterate through the headlines and get the polarity scores
+scores = [vader.polarity_scores (headline) for headline in scored_news ['headline'].values ]
+scores_df = pd.DataFrame (scores)
+# Join the DataFrames
+scored_news = pd.concat ([scored_news, scores_df], axis = 1)
+
+# Convert the date column from string to datetime
+scored_news['date'] = pd.to_datetime(scored_news.date).dt.date
+scored_news.head ()
+ticker	date	time	headline	neg	neu	pos	compound
+0	tsla	2018-11-26	01:25PM	Tesla was weeks from dying earlier this year, ...	0.000	1.000	0.000	0.0000
+1	tsla	2018-11-26	01:08PM	Elon Musk Says Tesla Was 'Close to Death' Duri...	0.281	0.719	0.000	-0.5994
+2	tsla	2018-11-26	01:07PM	Tesla Almost Died Earlier This Year, Says Elon...	0.292	0.708	0.000	-0.5118
+3	tsla	2018-11-26	01:00PM	Elon Musk Said Tesla Almost Died and the Stoc...	0.249	0.751	0.000	-0.5118
+4	tsla	2018-11-26	12:36PM	Elon Musk Admits Tesla Was Near Death This Year	0.298	0.534	0.168	-0.4019
+6. Plot all the sentiment in subplots
+Now that we have the scores, let's start plotting the results. We will start by plotting the time series for the stocks we have.
+
+import matplotlib.pyplot as plt
+plt.style.use("fivethirtyeight")
+%matplotlib inline
+mean_c = scored_news.groupby (['ticker', 'date']).mean ()
+mean_c
+neg	neu	pos	compound
+ticker	date				
+fb	2018-09-18	0.104864	0.843682	0.051455	-0.052564
+2018-09-19	0.072920	0.805560	0.121640	0.057568
+2018-09-20	0.059567	0.870233	0.070200	0.018447
+2018-09-21	0.052762	0.886381	0.060857	0.014310
+2018-09-22	0.000000	0.899000	0.101000	0.255300
+2018-12-28	0.146909	0.816273	0.036818	-0.120973
+2018-12-29	0.102333	0.836333	0.061333	-0.024933
+2018-12-30	0.033667	0.817167	0.149167	0.173817
+2018-12-31	0.152267	0.760000	0.087800	-0.076540
+2019-01-01	0.000000	0.791667	0.208333	0.291667
+2019-01-02	0.023857	0.882762	0.093381	0.080748
+2019-01-03	0.089250	0.817700	0.093050	0.045855
+2019-01-04	0.066524	0.858286	0.075190	0.015771
+tsla	2018-09-18	0.112875	0.807688	0.079438	-0.085650
+2018-09-19	0.066732	0.879244	0.054000	-0.025949
+2018-09-20	0.079478	0.760913	0.159609	0.106439
+2018-09-21	0.102150	0.813900	0.083950	-0.030190
+2018-11-16	0.022000	0.931810	0.046190	0.026714
+2018-11-17	0.000000	0.916500	0.083500	0.190900
+2018-11-18	0.000000	0.956667	0.043333	0.067433
+2018-11-19	0.093263	0.821105	0.085632	0.002384
+2018-11-20	0.014154	0.941308	0.044538	0.066862
+2018-11-21	0.056091	0.821273	0.122636	0.162045
+2018-11-22	0.370000	0.630000	0.000000	-0.637260
+2018-11-23	0.040000	0.920000	0.040000	0.000000
+2018-11-25	0.052750	0.801500	0.145750	0.046725
+2018-11-26	0.132222	0.825056	0.042722	-0.173767
+2019-01-02	0.182878	0.718286	0.098918	-0.093196
+2019-01-03	0.136727	0.826091	0.037182	-0.115723
+2019-01-04	0.025310	0.898655	0.076069	0.081938
+# Unstack the column ticker
+mean_c = mean_c.unstack ('ticker')
+# Get the cross-section of compound in the 'columns' axis
+mean_c = mean_c.xs ('compound', axis = 'columns')
+# Plot a bar chart with pandas
+mean_c.plot.bar ()
+<matplotlib.axes._subplots.AxesSubplot at 0x7f181cad1f90>
+
+7. Weekends and duplicates
+What happened to Tesla on November 22nd? Since we happen to have the headlines inside our DataFrame, a quick peek reveals that there are a few problems with that particular day:
+
+There are only 5 headlines for that day.
+Two headlines are verbatim the same as another but from another news outlet.
+Let's clean up the dataset a bit, but not too much! While some headlines are the same news piece from different sources, the fact that they are written differently could provide different perspectives on the same story. Plus, when one piece of news is more important, it tends to get more headlines from multiple sources. What we want to get rid of is verbatim copied headlines, as these are very likely coming from the same journalist and are just being "forwarded" around, so to speak.
+
+# Count the number of headlines in scored_news (store as integer)
+num_news_before = scored_news ['headline'].shape [0]
+# Drop duplicates based on ticker and headline
+scored_news_clean = scored_news.drop_duplicates (subset = ['ticker', 'headline'], keep = 'first')
+# Count number of headlines after dropping duplicates
+num_news_after = scored_news_clean ['headline'].shape [0]
+# Print before and after numbers to get an idea of how we did 
+f"Before we had {num_news_before} headlines, now we have {num_news_after}"
+'Before we had 500 headlines, now we have 476'
+8. Sentiment on one single trading day and stock
+Just to understand the possibilities of this dataset and get a better feel of the data, let's focus on one trading day and one single stock. We will make an informative plot where we will see the smallest grain possible: headline and subscores.
+
+# Set the index to ticker and date
+single_day = scored_news_clean.set_index(['ticker', 'date'])
+# Cross-section the fb row
+single_day = single_day.xs ('fb', axis = 'rows')
+# Select the 3rd of January of 2019
+single_day = single_day.loc [single_day.index == '2019-01-03']
+single_day = single_day.reset_index ()
+single_day = single_day.drop ('date', axis = 1)
+# Convert the datetime string to just the time
+single_day['time'] = pd.to_datetime (single_day ['time']).dt.time
+# Set the index to time and 
+single_day = single_day.set_index ('time')
+# Sort it
+single_day = single_day.sort_index()
+single_day.head ()
+headline	neg	neu	pos	compound
+time					
+06:00:00	Why Internet Censorship Doesnt Work and Never ...	0.000	1.000	0.000	0.0000
+08:04:00	3 Big Stock Charts for Thursday: Medtronic, Fa...	0.000	1.000	0.000	0.0000
+09:07:00	The Zacks Analyst Blog Highlights: Facebook, W...	0.000	0.846	0.154	0.2500
+09:12:00	Why The FAANGs Are Crucial To A 2019 Market Rally	0.000	1.000	0.000	0.0000
+09:34:00	Apple warning stoking fears of slowdown in Chi...	0.426	0.574	0.000	-0.6369
+9. Visualize the single day
+We will make a plot to visualize the positive, negative and neutral scores for a single day of trading and a single stock. This is just one of the many ways to visualize this dataset.
+
+TITLE = "Negative, neutral, and positive sentiment for FB on 2019-01-03"
+COLORS = ["red","orange", "green"]
+# Drop the columns that aren't useful for the plot
+plot_day = single_day.drop (['headline', 'compound'], axis = 1)
+# Change the column names to 'negative', 'positive', and 'neutral'
+plot_day.columns = ['negative', 'neutral', 'positive']
+# Plot a stacked bar chart
+plot_day.plot.bar (stacked = True, color = COLORS, title = TITLE, figsize = (10,6))
+<matplotlib.axes._subplots.AxesSubplot at 0x7f181c93ad50>
+
+plot_day.head ()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Import libraries
+from bs4 import BeautifulSoup
+import os
+import nltk
+nltk.download('vader_lexicon')
+[nltk_data] Downloading package vader_lexicon to
+[nltk_data]     /usr/share/nltk_data...
+[nltk_data]   Package vader_lexicon is already up-to-date!
+True
+os.listdir('../input/sentiments-dataset')
+['tsla_26nov.html',
+ 'fb_22sep.html',
+ 'tsla_05ene.html',
+ 'tsla_22sep.html',
+ 'fb_05ene.html']
+html_tables = {}
+
+# For every table in the datasets folder...
+for table_name in os.listdir('../input/sentiments-dataset'):
+    #this is the path to the file. Don't touch!
+    table_path = f'../input/sentiments-dataset/{table_name}'
+    # Open as a python file in read-only mode
+    table_file = open(table_path, "r")
+    # Read the contents of the file into 'html'
+    html = BeautifulSoup (table_file)
+    # Find 'news-table' in the Soup and load it into 'html_table'
+    html_table = html.find (id = 'news-table')
+    # Add the table to our dictionary
+    html_tables[table_name] = html_table
+
+
+    
+
+    
+    
+    import yfinance as yf
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import requests
+
+# Download NLTK data for sentiment analysis
+nltk.download('vader_lexicon')
+
+# Function to analyze sentiment of a text
+def analyze_sentiment(text):
+    sia = SentimentIntensityAnalyzer()
+    sentiment_score = sia.polarity_scores(text)['compound']
+    return sentiment_score
+
+# Function to get stock information using yfinance
+def get_stock_info(ticker):
+    stock_data = yf.Ticker(ticker)
+    return stock_data.info
+
+# Function to get financial news and analyze sentiment
+def get_news_sentiment(ticker):
+    news_url = f'https://newsapi.org/v2/everything?q={ticker}&apiKey=your-api-key'  # Replace 'your-api-key' with an actual API key if needed
+    
+    response = requests.get(news_url)
+    news_data = response.json()
+
+    if 'articles' in news_data:
+        for article in news_data['articles']:
+            title = article['title']
+            description = article.get('description', '')
+
+            # Analyze sentiment of title and description
+            title_sentiment = analyze_sentiment(title)
+            description_sentiment = analyze_sentiment(description)
+
+            print(f"Title: {title}")
+            print(f"Title Sentiment: {title_sentiment}")
+            print(f"Description: {description}")
+            print(f"Description Sentiment: {description_sentiment}")
+            print("\n")
+
+# Example usage
+if __name__ == "__main__":
+    stock_ticker = 'AAPL'  # Replace with the desired stock ticker
+    get_news_sentiment(stock_ticker)
+    stock_info = get_stock_info(stock_ticker)
+    print("Stock Information:")
+    display(stock_info)
+Let’s break down the code part by part:
+
+Importing necessary libraries/modules:
+Use Case: You are building a financial analysis tool that requires fetching stock information, analyzing sentiment in news articles, and making HTTP requests to external APIs. These libraries/modules are essential for handling these tasks efficiently.
+
+import yfinance as yf
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import requests
+
+Explanation:
+
+The code imports necessary libraries and modules for financial data retrieval (yfinance), natural language processing with VADER sentiment analysis (nltk), and making HTTP requests (requests).
+Here, the code imports the `yfinance` library for fetching stock information, the `nltk` library for natural language processing tasks, specifically using the VADER sentiment analysis tool, and the `requests` module for making HTTP requests.
+
+2. Downloading NLTK data for sentiment analysis:
+
+Use Case: You are developing a sentiment analysis application and want to use the VADER sentiment analysis tool from NLTK. Downloading the VADER lexicon is necessary for accurate sentiment analysis.
+
+nltk.download('vader_lexicon')
+
+Explanation:
+
+This line downloads the VADER lexicon, which is essential for performing sentiment analysis using the VADER sentiment analysis tool from the NLTK library.
+This line downloads the VADER lexicon, which is a pre-trained sentiment analysis tool provided by NLTK.
+
+3. Defining a function to analyze sentiment:
+
+Use Case: You have a large dataset of text data, such as customer reviews or social media comments, and you want to analyze the sentiment of each text. The analyze_sentiment function provides a way to quickly calculate sentiment scores for each piece of text.
+
+def analyze_sentiment(text):
+ sia = SentimentIntensityAnalyzer()
+ sentiment_score = sia.polarity_scores(text)['compound']
+ return sentiment_score
+
+Explanation:
+
+This function, analyze_sentiment, takes a text input and uses the VADER sentiment analysis tool to calculate a compound sentiment score. The compound score represents the overall sentiment of the text.
+This function takes a text input and uses the VADER sentiment analysis tool to calculate a compound sentiment score.
+
+4. Defining a function to get stock information using yfinance:
+
+Use Case: You are creating a financial dashboard or application that requires real-time stock information. The get_stock_info function allows you to easily retrieve detailed information about a specific stock using the Yahoo Finance API.
+
+def get_stock_info(ticker):
+ stock_data = yf.Ticker(ticker)
+ return stock_data.info
+
+Explanation:
+
+The function get_stock_info takes a stock ticker symbol as input and uses the yfinance library to fetch and return detailed information about the specified stock.
+This function takes a stock ticker symbol as input and uses the `yfinance` library to fetch and return the information about the stock.
+
+5. Defining a function to get financial news and analyze sentiment:
+
+Use Case: You want to stay informed about the latest news related to a particular stock and understand the sentiment of the news articles. The get_news_sentiment function fetches news articles using the News API, analyzes the sentiment of titles and descriptions, and prints the results.
+
+def get_news_sentiment(ticker):
+ news_url = f'https://newsapi.org/v2/everything?q={ticker}&apiKey=your-api-key' # Replace 'your-api-key' with an actual API key if needed
+ 
+ response = requests.get(news_url)
+ news_data = response.json()
+if 'articles' in news_data:
+ for article in news_data['articles']:
+ title = article['title']
+ description = article.get('description', '')
+# Analyze sentiment of title and description
+ title_sentiment = analyze_sentiment(title)
+ description_sentiment = analyze_sentiment(description)
+print(f"Title: {title}")
+ print(f"Title Sentiment: {title_sentiment}")
+ print(f"Description: {description}")
+ print(f"Description Sentiment: {description_sentiment}")
+ print("\n")
+
+Explanation:
+
+The get_news_sentiment function takes a stock ticker as input and constructs a URL to fetch news related to the stock using the News API.
+It then makes an HTTP request to the News API, retrieves the JSON response, and iterates through the articles, printing the title, description, and their respective sentiment scores (calculated using the analyze_sentiment function).
+This function takes a stock ticker as input, constructs a URL to fetch news related to the stock using the News API, and then iterates through the articles in the response, printing the title, description, and their respective sentiment scores.
+
+6. Example usage:
+
+Use Case: You are interested in analyzing the sentiment of news articles related to a specific stock (e.g., ‘AAPL’) and simultaneously fetching and displaying detailed stock information. The example usage in the main block demonstrates how to use the previously defined functions for this purpose.
+
+if __name__ == "__main__":
+ stock_ticker = 'AAPL' # Replace with the desired stock ticker
+ get_news_sentiment(stock_ticker)
+ stock_info = get_stock_info(stock_ticker)
+ print("Stock Information:")
+ display(stock_info)
+
+Explanation:
+
+The main block sets the stock ticker symbol (in this case, ‘AAPL’).
+It then calls the get_news_sentiment function to fetch and analyze news sentiment for the specified stock.
+The get_stock_info function is called to fetch and print detailed stock information.
+Note: The display function is mentioned but not defined; you may need to replace it with a suitable print or display function based on your needs.
+In the main block, it sets the stock ticker symbol (in this case, ‘AAPL’), calls the `get_news_sentiment` function to fetch and analyze news sentiment, and then calls the `get_stock_info` function to get and print stock information using `yfinance`. Note that there is a `display` function call at the end, which seems to be missing its definition; you may want to replace it with a suitable print or display function based on your needs.
+
+
+
+
+
+
+    
+
+
+
+Code for Sentiment Analysis using Bag of Words Vectorization Approach:
+
+To build a sentiment analysis in python model using the BOW Vectorization Approach we need a labeled dataset. As stated earlier, the dataset used for this demonstration has been obtained from Kaggle. We have simply used sklearn’s count vectorizer to create the BOW. After, we trained a Multinomial Naive Bayes classifier, for which an accuracy score of 0.84 was obtained.
+
+Dataset can be obtained from here.
+
+#Loading the Dataset
+import pandas as pd
+data = pd.read_csv('Finance_data.csv')
+#Pre-Prcoessing and Bag of Word Vectorization using Count Vectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+from nltk.tokenize import RegexpTokenizer
+token = RegexpTokenizer(r'[a-zA-Z0-9]+')
+cv = CountVectorizer(stop_words='english',ngram_range = (1,1),tokenizer = token.tokenize)
+text_counts = cv.fit_transform(data['sentences'])
+#Splitting the data into trainig and testing
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(text_counts, data['feedback'], test_size=0.25, random_state=5)
+#Training the model
+from sklearn.naive_bayes import MultinomialNB
+MNB = MultinomialNB()
+MNB.fit(X_train, Y_train)
+#Caluclating the accuracy score of the model
+from sklearn import metrics
+predicted = MNB.predict(X_test)
+accuracy_score = metrics.accuracy_score(predicted, Y_test)
+print("Accuracuy Score: ",accuracy_score)
+
+
+
+
+
+
+#Importing necessary libraries
+import nltk
+import pandas as pd
+from textblob import Word
+from nltk.corpus import stopwords
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+from keras.models import Sequential
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing.sequence import pad_sequences
+from keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
+from sklearn.model_selection import train_test_split 
+#Loading the dataset
+data = pd.read_csv('Finance_data.csv')
+#Pre-Processing the text 
+def cleaning(df, stop_words):
+    df['sentences'] = df['sentences'].apply(lambda x: ' '.join(x.lower() for x in x.split()))
+    # Replacing the digits/numbers
+    df['sentences'] = df['sentences'].str.replace('d', '')
+    # Removing stop words
+    df['sentences'] = df['sentences'].apply(lambda x: ' '.join(x for x in x.split() if x not in stop_words))
+    # Lemmatization
+    df['sentences'] = df['sentences'].apply(lambda x: ' '.join([Word(x).lemmatize() for x in x.split()]))
+    return df
+stop_words = stopwords.words('english')
+data_cleaned = cleaning(data, stop_words)
+#Generating Embeddings using tokenizer
+tokenizer = Tokenizer(num_words=500, split=' ') 
+tokenizer.fit_on_texts(data_cleaned['verified_reviews'].values)
+X = tokenizer.texts_to_sequences(data_cleaned['verified_reviews'].values)
+X = pad_sequences(X)
+#Model Building
+model = Sequential()
+model.add(Embedding(500, 120, input_length = X.shape[1]))
+model.add(SpatialDropout1D(0.4))
+model.add(LSTM(704, dropout=0.2, recurrent_dropout=0.2))
+model.add(Dense(352, activation='LeakyReLU'))
+model.add(Dense(3, activation='softmax'))
+model.compile(loss = 'categorical_crossentropy', optimizer='adam', metrics = ['accuracy'])
+print(model.summary())
+#Model Training
+model.fit(X_train, y_train, epochs = 20, batch_size=32, verbose =1)
+#Model Testing
+model.evaluate(X_test,y_test)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Step1: Installation
+pip install transformers
+Step2: Importing SentimentIntensityAnalyzer class from Vader
+import transformers
+Step3: Code for Sentiment Analysis Using Transformer based models
+To perform any task using transformers, we first need to import the pipeline function from transformers. Then, an object of the pipeline function is created and the task to be performed is passed as an argument (i.e sentiment analysis in our case). We can also specify the model that we need to use to perform the task. Here, since we have not mentioned the model to be used, the distillery-base-uncased-finetuned-sst-2-English mode is used by default for sentiment analysis. You can check out the list of available tasks and models here.
+
+from transformers import pipeline
+sentiment_pipeline = pipeline("sentiment-analysis")
+data = ["It was the best of times.", "t was the worst of times."]
+sentiment_pipeline(data)
+Output
+
+[{'label': 'POSITIVE', 'score': 0.999457061290741},  {'label': 'NEGATIVE', 'score': 0.9987301230430603}]
+
+
+
+
+
+
+
+
+
+
+
+
+#Preprocessing tweets
+def process_tweet(tweet):
+    #Remove old style retweet text "RT"
+    tweet2 = re.sub(r'^RT[\s]','', tweet)
+    
+    #Remove hyperlinks
+    tweet2 = re.sub(r'https?:\/\/.*[\r\n]*','', tweet2)
+    
+    #Remove hastags
+    #Only removing the hash # sign from the word
+    tweet2 = re.sub(r'#','',tweet2)
+        
+    # instantiate tokenizer class
+    tokenizer = TweetTokenizer(preserve_case=False,    strip_handles=True, reduce_len=True)
+    
+    # tokenize tweets
+    tweet_tokens = tokenizer.tokenize(tweet2)    
+        
+    #Import the english stop words list from NLTK
+    stopwords_english = stopwords.words('english') 
+    
+    #Creating a list of words without stopwords
+    tweets_clean = []
+    for word in tweet_tokens:
+        if word not in stopwords_english and word not in string.punctuation:
+            tweets_clean.append(word)
+        
+    #Instantiate stemming class
+    stemmer = PorterStemmer()
+    
+    #Creating a list of stems of words in tweet
+    tweets_stem = []
+    for word in tweets_clean:
+        stem_word = stemmer.stem(word)
+        tweets_stem.append(stem_word)
+        
+    return tweets_stem
+    # create preprocess_text function
+def preprocess_text(text):
+
+    # Tokenize the text
+
+    tokens = word_tokenize(text.lower())
+
+
+
+
+    # Remove stop words
+
+    filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
+
+
+
+
+    # Lemmatize the tokens
+
+    lemmatizer = WordNetLemmatizer()
+
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+
+
+
+
+    # Join the tokens back into a string
+
+    processed_text = ' '.join(lemmatized_tokens)
+
+    return processed_text
+
+# apply the function df
+
+df['reviewText'] = df['reviewText'].apply(preprocess_text)
+df
+
+
+
+
+How Does Sentiment Analysis Work? 
+Sentiment analysis in Python typically works by employing natural language processing (NLP) techniques to analyze and understand the sentiment expressed in text. The process involves several steps:
+
+Text Preprocessing: The text cleaning process involves removing irrelevant information, such as special characters, punctuation, and stopwords, from the text data.
+Tokenization: The text is divided into individual words or tokens to facilitate analysis.
+Feature Extraction: The text extraction process involves extracting relevant features from the text, such as words, n-grams, or even parts of speech.
+Sentiment Classification: Machine learning algorithms or pre-trained models are used to classify the sentiment of each text instance. Researchers achieve this through supervised learning, where they train models on labeled data, or through pre-trained models that have learned sentiment patterns from large datasets.
+Post-processing: The sentiment analysis results may undergo additional processing, such as aggregating sentiment scores or applying threshold rules to classify sentiments as positive, negative, or neutral.
+Evaluation: Researchers assess the performance of the sentiment analysis model using evaluation metrics, such as accuracy, precision, recall, or F1 score.
+
+
+
+
+
+
+Ways to Perform Sentiment Analysis in Python
+Python is one of the most powerful tools when it comes to performing data science tasks?—?it offers a multitude of ways to perform sentiment analysis in Python. The most popular ones are enlisted here:
+
+Using Text Blob
+Using Vader
+Using Bag of Words Vectorization-based Models
+Using LSTM-based Models
+Using Transformer-based Models
+Let’s dive deep into them one by one.
+'''
+
+        
+        #{'neg': 0.0, 'neu': 0.295, 'pos': 0.705, 'compound': 0.8012}
+
+
+        #textPage.lower()
+        
+        #words       = [ w for w in textPage if w.isalpha() ]
+        #words       = [ w for w in words if w.lower() not in self.stopwords ]
+        #tokenWords  = nltk.word_tokenize( words )
+        #freqDist    = nltk.FreqDist( tokenWords )
+
+'''
+
